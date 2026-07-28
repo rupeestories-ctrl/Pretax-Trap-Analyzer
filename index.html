@@ -695,6 +695,30 @@ body{background:var(--cream);overflow-x:hidden}
 .full-width-results+ .detail-grid{padding-top:0}
 @media print{.full-width-results{display:block}}
 
+
+/* ---------- contribution scope and bridge handoff ---------- */
+.scope-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 0}
+.scope-strip>div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;box-shadow:0 3px 12px rgba(22,33,54,.04)}
+.scope-strip span{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:900;color:var(--muted);margin-bottom:4px}
+.scope-strip strong{display:block;font-size:13px;line-height:1.35;color:var(--navy)}
+.handoff-section{padding-bottom:8px}
+.handoff-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.phase-card{position:relative;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:20px;box-shadow:0 8px 24px rgba(22,33,54,.055)}
+.phase-card.highlighted{border-left-color:var(--gold-deep);background:linear-gradient(145deg,#fff 0%,#fbf5e7 100%)}
+.phase-num{font:900 10px var(--mono);letter-spacing:.12em;color:var(--gold-deep);margin-bottom:10px}
+.phase-card h3{font:900 18px/1.2 var(--display);color:var(--navy);margin:0 0 7px}
+.phase-age{font:800 13px var(--mono);color:var(--accent);margin-bottom:10px}
+.phase-card p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
+.bridge-cta{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-top:16px;padding:22px 24px;border-radius:15px;background:linear-gradient(120deg,var(--navy-deep),var(--navy-blue));color:#fff;border-left:4px solid var(--gold-deep);box-shadow:0 10px 30px rgba(14,23,39,.18)}
+.bridge-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--gold-soft);margin-bottom:5px}
+.bridge-cta h3{font:900 23px/1.15 var(--display);margin:0 0 6px;color:#fff}
+.bridge-cta p{margin:0;color:#c9d2df;font-size:13.5px;line-height:1.5;max-width:72ch}
+.bridge-cta a{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;text-decoration:none;background:var(--gold);color:var(--navy-deep);font-weight:900;border-radius:999px;padding:12px 19px;box-shadow:0 5px 16px rgba(0,0,0,.18)}
+.bridge-cta a:hover{transform:translateY(-1px);filter:brightness(1.03)}
+.handoff-note{margin-top:10px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:var(--cream-2);color:var(--ink-soft);font-size:12px}
+@media(max-width:900px){.scope-strip,.handoff-grid{grid-template-columns:1fr}.bridge-cta{grid-template-columns:1fr}.bridge-cta a{justify-self:start}}
+@media print{.scope-strip,.handoff-grid{grid-template-columns:repeat(3,1fr)}.bridge-cta{background:#fff!important;color:#000!important;border:1pt solid #999!important}.bridge-cta h3,.bridge-cta p,.bridge-kicker{color:#000!important}.bridge-cta a{display:none}}
+
 </style>
 </head>
 <body>
@@ -815,14 +839,19 @@ body{background:var(--cream);overflow-x:hidden}
     <div class="answer-grid">
       <div class="answer-main"><div class="ey">Best contribution bucket</div><div class="winner" id="answerWinner">-</div><span class="confidence" id="answerConfidence">-</span></div>
       <div class="answer-stats">
-        <div class="astat"><div class="k">Permanent break-even after retirement</div><div class="v" id="answerBreakEven">-</div><div class="s" id="answerBreakEvenSub">-</div></div>
+        <div class="astat"><div class="k">After-tax crossover</div><div class="v" id="answerBreakEven">-</div><div class="s" id="answerBreakEvenSub">-</div></div>
         <div class="astat"><div class="k" id="answerDeltaLabel">After-tax advantage at 95</div><div class="v" id="answerDelta">-</div><div class="s" id="answerDeltaSub">versus continuing pre-tax</div></div>
         <div class="astat"><div class="k">Lifetime tax difference</div><div class="v" id="answerTaxDelta">-</div><div class="s" id="answerTaxSub">-</div></div>
       </div>
     </div>
   </div>
+  <div class="scope-strip" id="scopeStrip">
+    <div><span>Contribution period</span><strong id="scopeContribution">-</strong></div>
+    <div><span>Retirement begins</span><strong id="scopeRetirement">-</strong></div>
+    <div><span>What the crossover means</span><strong id="scopeMeaning">-</strong></div>
+  </div>
   <div class="answer-detail-grid">
-    <div class="chartbox"><svg class="chart" id="breakChart" viewBox="0 0 900 330" role="img" aria-label="Projected outcome advantage of Roth and brokerage compared with pre-tax by age"></svg><div class="legend"><span><i style="background:#2E7D5B"></i>Roth projected advantage</span><span><i style="background:#0F4C81"></i>Brokerage projected advantage</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Break-even line</span></div></div>
+    <div class="chartbox"><svg class="chart" id="breakChart" viewBox="0 0 900 330" role="img" aria-label="Projected outcome advantage of Roth and brokerage compared with pre-tax by age"></svg><div class="legend"><span><i style="background:#2E7D5B"></i>Roth projected advantage</span><span><i style="background:#0F4C81"></i>Brokerage projected advantage</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Crossover line</span></div></div>
     <div class="why-card" id="whyBox"><h3>Why this result</h3><ul id="whyList"></ul></div>
   </div>
 </section>
@@ -848,7 +877,7 @@ body{background:var(--cream);overflow-x:hidden}
 <div class="detail-grid full-width-results">
 <section>
   <div class="sec-head"><span class="sec-num">04</span><h2>Withdrawal-order comparison</h2><span class="sec-note">The contribution answer can change when the drawdown order changes.</span></div>
-  <div class="table-card"><table class="data"><thead><tr><th>Withdrawal order</th><th>Best bucket</th><th>Roth break-even</th><th>Brokerage break-even</th><th>Best projected outcome</th></tr></thead><tbody id="orderRows"></tbody></table></div>
+  <div class="table-card"><table class="data"><thead><tr><th>Withdrawal order</th><th>Best bucket</th><th>Roth crossover</th><th>Brokerage crossover</th><th>Best projected outcome</th></tr></thead><tbody id="orderRows"></tbody></table></div>
 </section>
 
 <section>
@@ -869,12 +898,37 @@ body{background:var(--cream);overflow-x:hidden}
 </section>
 </div>
 
-<section>
-  <div class="sec-head"><span class="sec-num">08</span><h2>Retirement action timeline</h2><span class="sec-note">Three strategy columns. Only years with a decision, account change or major tax event are shown.</span></div>
-  <div class="timeline-intro"><strong>What should happen at each milestone?</strong><span>The complete annual calculations for every age remain available in the CSV download.</span></div>
-  <div class="timeline-columns-head" id="timelineHeads"></div>
-  <div id="timelineRows"></div>
-  <div class="timeline-note">Amounts are shown in today’s dollars. “Use from” identifies the account funding spending in that milestone year. A funding shortfall means the selected accounts cannot fully meet the spending target.</div>
+<section class="handoff-section">
+  <div class="sec-head"><span class="sec-num">08</span><h2>What happens after retirement?</h2><span class="sec-note">This analyzer chooses the contribution bucket. The bridge planner handles account access and retirement cash flow.</span></div>
+  <div class="handoff-grid">
+    <article class="phase-card">
+      <div class="phase-num">01</div>
+      <h3>Save until retirement</h3>
+      <div class="phase-age" id="phaseContributionAge">-</div>
+      <p id="phaseContributionText">The three paths differ only in where future savings are placed before retirement.</p>
+    </article>
+    <article class="phase-card">
+      <div class="phase-num">02</div>
+      <h3>Salary and contributions stop</h3>
+      <div class="phase-age" id="phaseRetirementAge">-</div>
+      <p>This tool continues projecting taxes, withdrawals and account growth, but it does not prescribe an early-retirement access plan.</p>
+    </article>
+    <article class="phase-card highlighted">
+      <div class="phase-num">03</div>
+      <h3>Build the retirement bridge</h3>
+      <div class="phase-age">After retirement</div>
+      <p>Use the separate planner for Rule of 55, 72(t), Roth-ladder vintages, healthcare, liquid runway and spending shortfalls.</p>
+    </article>
+  </div>
+  <div class="bridge-cta">
+    <div>
+      <div class="bridge-kicker">Next tool</div>
+      <h3>Retirement Bridge Planner</h3>
+      <p id="bridgeSummary">Take the selected retirement age and account balances into the bridge planner to decide how to fund the years after salary stops.</p>
+    </div>
+    <a href="https://rupeestories-ctrl.github.io/Retirement-Bridge-Planner/" target="_blank" rel="noopener noreferrer">Build my retirement bridge <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="handoff-note" id="handoffNote">The after-tax crossover is a comparison result. It does not assume contributions continue after retirement.</div>
 </section>
 
 <footer>
@@ -882,7 +936,7 @@ body{background:var(--cream);overflow-x:hidden}
   <p><strong>India assumptions.</strong> Section 89A and Form 10EE address timing for specified foreign retirement accounts. They do not create a stated Roth exemption. The Roth menu therefore runs three assumptions. Treaty pension treatment, RNOR years, foreign-tax credits and Indian residency outcomes depend on facts the calculator cannot establish.</p>
   <p><strong>Limits.</strong> This is one deterministic path. It does not model market sequence risk, AMT, NIIT, itemised deductions, tax-exempt interest, state residency after a move, expatriation tax, inherited-account tax, long-term care or plan-specific distribution rules. The temporary enhanced senior deduction is included only for calendar years 2026 through 2028. After-tax account values use a fixed ten-year marginal drawdown estimate, not a one-year liquidation. Modelled tax excludes tax on salary unrelated to this decision, but includes the extra working-year tax created by giving up the pre-tax deduction. When conversion tax is paid from brokerage, tax triggered by selling brokerage assets is not separately grossed up. Taxable-account dividend and capital-gain-distribution drag before withdrawal is not modelled. Early-withdrawal penalties and account-access rules before age 59½ are not modelled. India tax slabs and the entered exchange rate are held constant in today's terms.</p>
   <details class="sources"><summary>Methods and official sources</summary><ul><li><a href="https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill">IRS 2026 tax adjustments</a></li><li><a href="https://www.irs.gov/publications/p590b">IRS Publication 590-B and Uniform Lifetime Table</a></li><li><a href="https://www.irs.gov/newsroom/check-your-eligibility-for-the-new-enhanced-deduction-for-seniors">IRS enhanced senior deduction</a></li><li><a href="https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles">CMS 2026 Medicare premiums and IRMAA</a></li><li><a href="https://secure.ssa.gov/poms.nsf/links/0601101030">SSA IRMAA two-year lookback</a></li><li><a href="https://www.incometaxindia.gov.in/w/section-89a-42">India Section 89A</a></li><li><a href="https://www.irs.gov/pub/irs-trty/india.pdf">US-India income-tax treaty</a></li></ul></details>
-  <p>Built for r/rupeestories · rupeestories.substack.com</p>
+  <p>Next step after choosing a contribution bucket: <a href="https://rupeestories-ctrl.github.io/Retirement-Bridge-Planner/" target="_blank" rel="noopener noreferrer">Retirement Bridge Planner</a>.</p><p>Built for r/rupeestories · rupeestories.substack.com</p>
 </footer>
 
 </div>
@@ -1133,7 +1187,7 @@ let LAST=null,INPUT_MODE="advanced",renderTimer=null;const DEFAULTS={};
 function render(){
   const inp=readInputs();validateInputs(inp);document.querySelectorAll(".spouse-row").forEach(el=>el.style.display=inp.filing==="mfj"?"":"none");document.querySelectorAll(".row.nri").forEach(el=>el.style.display=inp.plan==="india"?"":"none");
   const base=simulate(inp,"pre"),roth=simulate(inp,"roth"),brok=simulate(inp,"brokerage"),set={base,roth,brok},analysis=analyseSet(inp,set);LAST={inp,...set,analysis};
-  drawAnswer(inp,set,analysis);drawBreakChart(set,analysis);drawRmd(inp,base);drawChart(base.rows,inp,base.rmdAge);drawCards(inp,set,analysis);drawOrderTable(inp);drawSensitivity(inp);drawLedger(inp,base);drawChecks(inp,base,analysis);drawActionTimeline(inp,set,analysis);stampPrintMeta();
+  drawAnswer(inp,set,analysis);drawBreakChart(set,analysis);drawRmd(inp,base);drawChart(base.rows,inp,base.rmdAge);drawCards(inp,set,analysis);drawOrderTable(inp);drawSensitivity(inp);drawLedger(inp,base);drawChecks(inp,base,analysis);drawToolHandoff(inp,set,analysis);stampPrintMeta();
 }
 function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(render,70);}
 function formatBE(be){return be.age?"Age "+Math.round(be.age):"Not by 95";}
@@ -1152,7 +1206,7 @@ function drawAnswer(inp,set,a){
   }
   const winnerNote=winner==="pre"?(hasShortfall?"It delivers the most spending under the selected assumptions.":"The current deduction remains worth more than the projected future tax cost."):(hasShortfall?"It delivers more lifetime spending before the portfolio runs out.":"It produces the strongest after-tax result at age 95.");
   $("answerWinner").innerHTML=strategyName(winner)+`<small>${winnerNote}</small>`;
-  $("answerBreakEven").textContent=winner==="pre"?"Pre-tax stays ahead":formatBE(be);$("answerBreakEvenSub").textContent=winner==="pre"?"No redirect beats its projected outcome by 95":"first retirement age it stays ahead through 95";
+  $("answerBreakEven").textContent=winner==="pre"?"No redirect wins by 95":crossoverText(be,inp);$("answerBreakEvenSub").textContent=winner==="pre"?"continuing pre-tax remains the projected leader":"contributions stop at retirement; later crossover comes from taxes, withdrawals and growth";
   $("answerDeltaLabel").textContent=hasShortfall?"Projected outcome advantage":"After-tax advantage at 95";$("answerDelta").textContent=winner==="pre"?"Baseline":usdK(delta);$("answerDeltaSub").textContent=hasShortfall?"spending delivered + after-tax balance":"versus continuing pre-tax";
   $("answerTaxDelta").textContent=winner==="pre"?"Baseline":usdK(Math.abs(taxDiff));$("answerTaxSub").textContent=winner==="pre"?"continuing pre-tax":"modelled tax "+(taxDiff<0?"saved":"added")+", now to 95";
   const finals=[set.base.endOutcome,set.roth.endOutcome,set.brok.endOutcome].sort((x,y)=>y-x),gap=finals[0]-finals[1],stable=gap>Math.max(25000,finals[0]*.005);
@@ -1160,10 +1214,31 @@ function drawAnswer(inp,set,a){
   const reasons=[];const rmdBase=set.base.rows.find(r=>r.age>=set.base.rmdAge)||set.base.rows[0],winRow=a.best.rows.find(r=>r.age===rmdBase.age)||a.best.rows[0];
   if(hasShortfall){reasons.push(`${strategyName(winner)} has the smallest lifetime spending shortfall: ${usdK(a.best.lifeShortfall)}.`);reasons.push("When a portfolio runs out, spending delivered is ranked before the balance left at age 95.");}
   else if(winner==="pre"){reasons.push(`Your current deduction is worth about ${Math.round(inp.mrNow*100)}%, while the modelled marginal rate at the first modelled RMD is about ${Math.round(rmdBase.mr*100)}%.`);reasons.push("Neither redirect produces a lasting projected lead by age 95 under the selected assumptions.");}
-  else{reasons.push(`${strategyName(winner)} reaches a lasting lead ${be.age?"at age "+be.age:"after the displayed horizon"}.`);reasons.push(`Its first-modelled-RMD forced withdrawal is ${usdK(Math.max(0,rmdBase.rmd-winRow.rmd))} lower than the pre-tax path.`);reasons.push(`Modelled tax from now to 95 is ${taxDiff<0?usdK(-taxDiff)+" lower":usdK(taxDiff)+" higher"}.`);}
+  else{reasons.push(`${strategyName(winner)} reaches a lasting lead ${be.age?crossoverText(be,inp).toLowerCase():"after the displayed horizon"}.`);reasons.push(`Its first-modelled-RMD forced withdrawal is ${usdK(Math.max(0,rmdBase.rmd-winRow.rmd))} lower than the pre-tax path.`);reasons.push(`Modelled tax from now to 95 is ${taxDiff<0?usdK(-taxDiff)+" lower":usdK(taxDiff)+" higher"}.`);}
   if(inp.compareCost==="samecontrib"&&winner!=="pre")reasons.push("Equal contribution amounts require extra current cash. The model subtracts the compounded cash drag from projected wealth.");
   if(inp.plan==="india")reasons.push(`The result uses the selected India Roth assumption: ${$("rothIndia").selectedOptions[0].textContent}.`);
   $("whyList").innerHTML=reasons.map(x=>`<li>${x}</li>`).join("");
+}
+function crossoverText(be,inp){
+  if(!be||!be.age)return "Not by age 95";
+  const age=Math.round(be.age),years=age-inp.retAge;
+  if(years<=0)return `At retirement, age ${age}`;
+  return `Age ${age}, ${years} year${years===1?"":"s"} after retirement`;
+}
+function drawToolHandoff(inp,set,analysis){
+  const endAge=Math.max(inp.age,inp.retAge-1);
+  const contribText=inp.retAge<=inp.age?"No future contribution years modelled":`Ages ${Math.round(inp.age)}–${Math.round(endAge)}`;
+  const winner=analysis.best.mode;
+  const be=winner==="roth"?analysis.beR:winner==="brokerage"?analysis.beB:null;
+  const meaning=winner==="pre"?"No redirect stays ahead by age 95":`${strategyName(winner)} path: ${crossoverText(be,inp)}`;
+  $("scopeContribution").textContent=contribText;
+  $("scopeRetirement").textContent=`Age ${Math.round(inp.retAge)}`;
+  $("scopeMeaning").textContent=meaning;
+  $("phaseContributionAge").textContent=contribText;
+  $("phaseContributionText").textContent=inp.retAge<=inp.age?"The model contains no future saving period because retirement begins immediately.":`Employee contributions and employer match are modelled only through age ${Math.round(endAge)}.`;
+  $("phaseRetirementAge").textContent=`Age ${Math.round(inp.retAge)}`;
+  $("bridgeSummary").textContent=`Retirement begins at age ${Math.round(inp.retAge)}. Use the bridge planner to decide which accounts fund spending, whether Rule of 55 or 72(t) applies, and how a Roth ladder fits.`;
+  $("handoffNote").textContent=winner==="pre"?"The contribution recommendation ends at retirement. Post-retirement account access and cash-flow sequencing belong in the Retirement Bridge Planner.":`The ${strategyName(winner)} contribution path ${be&&be.age?"moves ahead "+crossoverText(be,inp).toLowerCase():"does not move ahead by age 95"}. This comparison does not assume contributions continue after age ${Math.round(endAge)}.`;
 }
 function drawBreakChart(set,a){
   const rows=set.base.rows,W=900,H=330,ml=68,mr=20,mt=20,mb=42,iw=W-ml-mr,ih=H-mt-mb,ages=rows.map(r=>r.age),rDiff=a.beR.diffs,bDiff=a.beB.diffs,maxAbs=Math.max(10000,...rDiff.map(Math.abs),...bDiff.map(Math.abs))*1.12;
@@ -1176,7 +1251,7 @@ function drawBreakChart(set,a){
 }
 function drawRmd(inp,base){
   const row=base.rows.find(r=>r.age>=base.rmdAge)||base.rows[0],mr=row.mr;$("vBal").textContent=usdK(row.preOpen);$("vBalSub").textContent="at your age "+row.age+", today's dollars";$("vRmd").textContent=usdK(row.rmd);$("vRmdSub").textContent="combined household RMD";$("vBracket").textContent=pct(mr);$("vBracketSub").textContent="IRMAA tier "+row.irmaaTier+" uses age "+(row.age-2)+" MAGI";
-  const tag=$("vTag"),txt=$("vText");tag.className="tag";if(mr>=inp.mrNow+.02){tag.classList.add("t-past");tag.textContent="Future rate is higher";txt.textContent=`The first modelled forced withdrawal is about ${Math.round(mr*100)}%, above the ${Math.round(inp.mrNow*100)}% deduction used today.`;}else if(mr>=inp.mrNow-.02){tag.classList.add("t-at");tag.textContent="Close call";txt.textContent="The deduction today and the first-RMD marginal rate are close. Break-even age and the sensitivity tests matter more than the headline tax rate.";}else{tag.classList.add("t-below");tag.textContent="Pre-tax still earns its keep";txt.textContent=`The first modelled forced withdrawal is near ${Math.round(mr*100)}%, below the ${Math.round(inp.mrNow*100)}% deduction used today.`;}
+  const tag=$("vTag"),txt=$("vText");tag.className="tag";if(mr>=inp.mrNow+.02){tag.classList.add("t-past");tag.textContent="Future rate is higher";txt.textContent=`The first modelled forced withdrawal is about ${Math.round(mr*100)}%, above the ${Math.round(inp.mrNow*100)}% deduction used today.`;}else if(mr>=inp.mrNow-.02){tag.classList.add("t-at");tag.textContent="Close call";txt.textContent="The deduction today and the first-RMD marginal rate are close. The after-tax crossover and sensitivity tests matter more than the headline tax rate.";}else{tag.classList.add("t-below");tag.textContent="Pre-tax still earns its keep";txt.textContent=`The first modelled forced withdrawal is near ${Math.round(mr*100)}%, below the ${Math.round(inp.mrNow*100)}% deduction used today.`;}
   const ages=[Math.ceil(base.rmdAge),80,85,90].filter((v,i,a)=>v>=base.rows[0].age&&v<=95&&a.indexOf(v)===i);$("rmdCheckRows").innerHTML=ages.map(age=>{const r=base.rows.find(x=>x.age===age)||base.rows.find(x=>x.age>=age);return r?`<tr><td>${r.age}</td><td>${usd(r.preOpen)}</td><td>${usd(r.rmd)}</td><td>${usd(r.ssTaxable)}</td><td>${pct(r.mr)}</td><td>${usd(r.irmaa)}</td></tr>`:"";}).join("");
 }
 function drawChart(rows,inp,rAge){
@@ -1187,11 +1262,11 @@ function drawChart(rows,inp,rAge){
   s+=`<line x1="${ml}" y1="${mt+ih}" x2="${W-mr}" y2="${mt+ih}" stroke="#162136" stroke-width="1.5"/>`;for(let age=Math.ceil(ages[0]/5)*5;age<=ages.at(-1);age+=5)s+=`<text x="${x(age)}" y="${mt+ih+18}" text-anchor="middle" font-family="ui-monospace" font-size="10.5" fill="#7C8190">${age}</text>`;for(let i=0;i<=4;i++){const v=maxV*i/4;s+=`<text x="${ml-8}" y="${y(v)+4}" text-anchor="end" font-family="ui-monospace" font-size="10.5" fill="#7C8190">${usdK(v)}</text>`;}$("chart").innerHTML=s;
 }
 function drawCards(inp,set,a){
-  const list=[set.base,set.roth,set.brok],best=a.best,hasShortfall=list.some(x=>x.lifeShortfall>100);$("cards").innerHTML=list.map(o=>{const d=o.endOutcome-set.base.endOutcome,be=o.mode==="roth"?a.beR:o.mode==="brokerage"?a.beB:null,extra=o.cashDrag,isBest=!a.tie&&o===best,flag=hasShortfall?"BEST PROJECTED OUTCOME":"HIGHEST AFTER-TAX VALUE";return `<div class="card${isBest?" best":""}">${isBest?`<span class="flag">${flag}</span>`:""}<h3>${strategyName(o.mode)}</h3><div class="sub">${o.mode==="pre"?"Deduct now and accept future ordinary-income tax.":o.mode==="roth"?"Pay tax now. Qualified US withdrawals avoid RMDs.":"After-tax flexibility with capital-gains treatment."}</div><div class="metric"><span>Estimated after-tax value at 95</span><b>${usdK(o.endAfterTax)}</b></div><div class="metric"><span>Raw account balance at 95</span><b>${usdK(o.endRaw)}</b></div><div class="metric"><span>Modelled tax, now to 95</span><b>${usdK(o.lifeTax)}</b></div>${o.mode!=="pre"?`<div class="metric"><span>Extra current tax before retirement</span><b>${usdK(o.workTaxCost)}</b></div>`:""}<div class="metric"><span>Lifetime spending shortfall</span><b>${usdK(o.lifeShortfall)}</b></div>${o.mode!=="pre"?`<div class="metric"><span>Break-even after retirement</span><b>${formatBE(be)}</b></div>`:""}${inp.compareCost==="samecontrib"&&o.mode!=="pre"?`<div class="metric"><span>Compounded extra cash cost</span><b>${usdK(extra)}</b></div>`:""}<div class="delta ${d>0?"pos":d<0?"neg":""}">${o.mode==="pre"?"baseline":(d>=0?"+ "+usdK(d)+" projected outcome":"- "+usdK(-d)+" projected outcome")}</div></div>`;}).join("");
+  const list=[set.base,set.roth,set.brok],best=a.best,hasShortfall=list.some(x=>x.lifeShortfall>100);$("cards").innerHTML=list.map(o=>{const d=o.endOutcome-set.base.endOutcome,be=o.mode==="roth"?a.beR:o.mode==="brokerage"?a.beB:null,extra=o.cashDrag,isBest=!a.tie&&o===best,flag=hasShortfall?"BEST PROJECTED OUTCOME":"HIGHEST AFTER-TAX VALUE";return `<div class="card${isBest?" best":""}">${isBest?`<span class="flag">${flag}</span>`:""}<h3>${strategyName(o.mode)}</h3><div class="sub">${o.mode==="pre"?"Deduct now and accept future ordinary-income tax.":o.mode==="roth"?"Pay tax now. Qualified US withdrawals avoid RMDs.":"After-tax flexibility with capital-gains treatment."}</div><div class="metric"><span>Estimated after-tax value at 95</span><b>${usdK(o.endAfterTax)}</b></div><div class="metric"><span>Raw account balance at 95</span><b>${usdK(o.endRaw)}</b></div><div class="metric"><span>Modelled tax, now to 95</span><b>${usdK(o.lifeTax)}</b></div>${o.mode!=="pre"?`<div class="metric"><span>Extra current tax before retirement</span><b>${usdK(o.workTaxCost)}</b></div>`:""}<div class="metric"><span>Lifetime spending shortfall</span><b>${usdK(o.lifeShortfall)}</b></div>${o.mode!=="pre"?`<div class="metric"><span>After-tax crossover</span><b>${crossoverText(be,inp)}</b></div>`:""}${inp.compareCost==="samecontrib"&&o.mode!=="pre"?`<div class="metric"><span>Compounded extra cash cost</span><b>${usdK(extra)}</b></div>`:""}<div class="delta ${d>0?"pos":d<0?"neg":""}">${o.mode==="pre"?"baseline":(d>=0?"+ "+usdK(d)+" projected outcome":"- "+usdK(-d)+" projected outcome")}</div></div>`;}).join("");
 }
 function simulateSet(inp){return {base:simulate(inp,"pre"),roth:simulate(inp,"roth"),brok:simulate(inp,"brokerage")};}
 function drawOrderTable(inp){
-  const rows=[];for(const order of ["conv","pre","prorata"]){const set=order===inp.order?{base:LAST.base,roth:LAST.roth,brok:LAST.brok}:simulateSet({...inp,order}),a=analyseSet(inp,set);rows.push(`<tr><td>${orderName(order)}</td><td class="best-cell">${a.tie?"Tie":strategyName(a.best.mode)}</td><td>${formatBE(a.beR)}</td><td>${formatBE(a.beB)}</td><td>${usd(a.best.endOutcome)}</td></tr>`);}$("orderRows").innerHTML=rows.join("");
+  const rows=[];for(const order of ["conv","pre","prorata"]){const set=order===inp.order?{base:LAST.base,roth:LAST.roth,brok:LAST.brok}:simulateSet({...inp,order}),a=analyseSet(inp,set);rows.push(`<tr><td>${orderName(order)}</td><td class="best-cell">${a.tie?"Tie":strategyName(a.best.mode)}</td><td>${crossoverText(a.beR,inp)}</td><td>${crossoverText(a.beB,inp)}</td><td>${usd(a.best.endOutcome)}</td></tr>`);}$("orderRows").innerHTML=rows.join("");
 }
 function drawSensitivity(inp){
   const returns=[Math.max(-.02,inp.ret-.02),inp.ret,Math.min(.20,inp.ret+.02)],spends=[.8,1,1.2],counts={pre:0,roth:0,brokerage:0,tie:0},cells=[];
@@ -1303,7 +1378,7 @@ function toCsv(){
   if(!LAST)return;const esc=v=>{const s=String(v);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;},lines=[["Pre-Tax Trap Analyzer"],["Generated",new Date().toISOString().slice(0,10)],["Plan",LAST.inp.plan==="india"?"Move to India":"Stay in US"],["Comparison basis",$("compareCost").selectedOptions[0].textContent],["All money figures","today's USD"],[]].map(r=>r.map(esc).join(","));
   const cols=["Strategy","Age","Projected outcome","After-tax value","Raw balance","Pre-tax opening","Forced RMD","Pre-tax withdrawn","Brokerage withdrawn","Roth withdrawn","Converted to Roth","Social Security","Spending","Taxable SS","Realised gains","US tax","India tax","IRMAA","Total tax","Marginal rate %","Pre-tax balance","Roth balance","Brokerage balance","Cash drag","Shortfall","Resident in India","RNOR"];
   lines.push(cols.map(esc).join(","));for(const s of [LAST.base,LAST.roth,LAST.brok])for(const r of s.rows){const vals=[strategyName(s.mode),r.age,r.outcomeValue,r.afterTax,r.pre+r.roth+r.taxB,r.preOpen,r.rmd,r._wPre/r.infFac,r._wTax/r.infFac,r._wRoth/r.infFac,r._conv/r.infFac,r._ss/r.infFac,r._need/r.infFac,r.ssTaxable,r.ltcg,r.fed,r.india,r.irmaa,r._tax/r.infFac,r.mr*100,r.pre,r.roth,r.taxB,r.cashDrag,r._shortfall/r.infFac,r.inIndia?"yes":"no",r.isRnor?"yes":"no"];lines.push(vals.map(v=>esc(typeof v==="number"?Math.round(v*100)/100:v)).join(","));}
-  lines.push("");lines.push(["Summary","Pre-tax","Roth","Brokerage"].join(","));for(const [label,fn] of [["Projected outcome",s=>s.endOutcome],["After-tax value at 95",s=>s.endAfterTax],["Raw balance at 95",s=>s.endRaw],["Modelled tax, now to 95",s=>s.lifeTax],["Extra current tax before retirement",s=>s.workTaxCost],["Retirement-period tax",s=>s.retirementTax],["Lifetime IRMAA",s=>s.lifeIrmaa],["Lifetime shortfall",s=>s.lifeShortfall]])lines.push([label,...[LAST.base,LAST.roth,LAST.brok].map(fn)].map(esc).join(","));lines.push(["Break-even after retirement","baseline",formatBE(LAST.analysis.beR),formatBE(LAST.analysis.beB)].map(esc).join(","));
+  lines.push("");lines.push(["Summary","Pre-tax","Roth","Brokerage"].join(","));for(const [label,fn] of [["Projected outcome",s=>s.endOutcome],["After-tax value at 95",s=>s.endAfterTax],["Raw balance at 95",s=>s.endRaw],["Modelled tax, now to 95",s=>s.lifeTax],["Extra current tax before retirement",s=>s.workTaxCost],["Retirement-period tax",s=>s.retirementTax],["Lifetime IRMAA",s=>s.lifeIrmaa],["Lifetime shortfall",s=>s.lifeShortfall]])lines.push([label,...[LAST.base,LAST.roth,LAST.brok].map(fn)].map(esc).join(","));lines.push(["After-tax crossover","baseline",crossoverText(LAST.analysis.beR,LAST.inp),crossoverText(LAST.analysis.beB,LAST.inp)].map(esc).join(","));
   const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pretax-trap-all-scenarios-"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);flash("CSV downloaded.");
 }
 function resetAll(){for(const k of Object.keys(DEFAULTS)){if(k==="__plan")continue;const el=$(k);if(el)el.value=DEFAULTS[k];}document.querySelectorAll("#segPlan button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.plan===DEFAULTS.__plan)));INPUT_MODE="advanced";history.replaceState(null,"",location.pathname);applyInputMode();render();flash("Reset to defaults.");}
