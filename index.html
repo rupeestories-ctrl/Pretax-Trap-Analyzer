@@ -490,6 +490,54 @@ table.data th,table.data td{padding:9px 10px}
 .audit-title{padding:14px 18px;font-weight:900;color:var(--navy);border-bottom:1px solid var(--line)}
 .audit-scroll{max-height:none;overflow:visible}
 .audit table.data{width:100%;min-width:900px}
+
+/* ---------- retirement action timeline ---------- */
+.timeline-intro{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);font-size:12px;color:var(--ink-soft)}
+.timeline-intro strong{color:var(--navy)}
+.timeline-columns-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 10px;padding-left:92px}
+.timeline-columns-head div{padding:9px 12px;border-radius:9px;background:var(--navy);color:#fff;font-size:11px;font-weight:900;text-align:center;letter-spacing:.04em}
+.timeline-columns-head div.preferred{background:var(--gold-deep);color:var(--navy-deep)}
+.timeline-year{display:grid;grid-template-columns:82px minmax(0,1fr);gap:10px;margin-bottom:12px;align-items:stretch}
+.timeline-age{border-radius:11px;background:var(--navy);color:#fff;padding:13px 9px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:146px}
+.timeline-age b{font:900 24px/1 var(--display)}
+.timeline-age span{font-size:10px;line-height:1.25;color:var(--gold-soft);margin-top:7px}
+.timeline-strategies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.timeline-cell{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:11px;padding:12px 13px;min-width:0;box-shadow:0 4px 15px rgba(22,33,54,.045)}
+.timeline-cell.preferred{border-left-color:var(--gold-deep)}
+.timeline-cell.warning{border-left-color:var(--alert);background:#FFF9F7}
+.timeline-cell .strategy-mobile{display:none;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:var(--muted);margin-bottom:7px}
+.timeline-cell ul{margin:0;padding-left:17px;color:var(--ink-soft);font-size:12px;line-height:1.42}
+.timeline-cell li{margin:3px 0}
+.timeline-cell li.primary{font-weight:800;color:var(--navy)}
+.timeline-cell li.danger{font-weight:900;color:var(--alert)}
+.timeline-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line-soft)}
+.timeline-metrics span{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.timeline-metrics b{display:block;font:700 11.5px var(--mono);color:var(--navy);margin-top:2px;text-transform:none;letter-spacing:0}
+.timeline-note{padding:10px 13px;color:var(--muted);font-size:11.5px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+@media (max-width:1050px){
+  .timeline-columns-head{display:none}
+  .timeline-year{grid-template-columns:70px minmax(0,1fr)}
+  .timeline-strategies{grid-template-columns:1fr}
+  .timeline-age{min-height:0}
+  .timeline-cell .strategy-mobile{display:block}
+}
+@media (max-width:620px){
+  .timeline-intro{display:block}
+  .timeline-intro span{display:block;margin-top:4px}
+  .timeline-year{grid-template-columns:1fr}
+  .timeline-age{min-height:0;display:block;text-align:left;padding:10px 12px}
+  .timeline-age b{font-size:19px}
+  .timeline-age span{margin-left:8px}
+}
+@media print{
+  .timeline-columns-head{padding-left:70px;gap:5pt}
+  .timeline-year{grid-template-columns:60pt 1fr;gap:5pt;break-inside:avoid}
+  .timeline-strategies{gap:5pt}
+  .timeline-age{min-height:0;padding:6pt}
+  .timeline-cell{padding:6pt;box-shadow:none}
+  .timeline-cell ul{font-size:7.5pt}
+  .timeline-metrics b{font-size:7pt}
+}
 footer{margin-top:28px;padding:18px 20px}
 
 @media (min-width:1550px){
@@ -743,7 +791,7 @@ body{background:var(--cream);overflow-x:hidden}
 
     <div class="grp-label">Where do you actually retire?</div>
     <div class="rows">
-      <div class="row"><label>Plan</label><span><span class="seg" id="segPlan"><button data-plan="us" aria-pressed="true">Stay in US</button><button data-plan="india" aria-pressed="false">Move to IN</button></span></span></div>
+      <div class="row"><label>Plan</label><span><span class="seg" id="segPlan"><button data-plan="us" aria-pressed="true">Stay in US</button><button data-plan="india" aria-pressed="false">Move to India</button></span></span></div>
       <div class="row nri"><label for="moveAge">Age you move to India</label><input type="number" id="moveAge" value="62" min="40" max="85"></div>
       <div class="row nri"><label for="spendIndia">Spend in India, today's $</label><input type="number" id="spendIndia" value="80000" min="0" step="5000"></div>
       <div class="row nri"><label for="rothIndia">India treatment of Roth <span class="hint">scenario assumption, not a settled rule</span></label><select id="rothIndia"><option value="earnings">Tax Roth earnings only</option><option value="exempt">Treat qualified Roth as tax-free</option><option value="gross">Tax full Roth withdrawal, stress test</option></select></div>
@@ -822,12 +870,15 @@ body{background:var(--cream);overflow-x:hidden}
 </div>
 
 <section>
-  <div class="sec-head"><span class="sec-num">08</span><h2>Year-by-year audit</h2><span class="sec-note">Open the table or download the full CSV for all three strategies.</span></div>
-  <div class="audit audit-always"><div class="audit-title">Annual results for all three contribution strategies</div><div class="audit-scroll"><table class="data"><thead><tr><th>Strategy</th><th>Age</th><th>Projected outcome</th><th>After-tax value</th><th>Raw balance</th><th>RMD</th><th>Total tax</th><th>IRMAA</th><th>Shortfall</th></tr></thead><tbody id="auditRows"></tbody></table></div></div>
+  <div class="sec-head"><span class="sec-num">08</span><h2>Retirement action timeline</h2><span class="sec-note">Three strategy columns. Only years with a decision, account change or major tax event are shown.</span></div>
+  <div class="timeline-intro"><strong>What should happen at each milestone?</strong><span>The complete annual calculations for every age remain available in the CSV download.</span></div>
+  <div class="timeline-columns-head" id="timelineHeads"></div>
+  <div id="timelineRows"></div>
+  <div class="timeline-note">Amounts are shown in today’s dollars. “Use from” identifies the account funding spending in that milestone year. A funding shortfall means the selected accounts cannot fully meet the spending target.</div>
 </section>
 
 <footer>
-  <p><strong>Model version 2026.3, updated July 2026.</strong> Federal brackets and the standard deduction use IRS tax-year 2026 figures. RMDs use the IRS Uniform Lifetime Table. The 2026 Medicare income thresholds and Part B + Part D surcharges are modelled with the normal two-year MAGI lookback. Future thresholds and surcharges are indexed using your inflation assumption.</p>
+  <p><strong>Model version 2026.4, updated July 2026.</strong> Federal brackets and the standard deduction use IRS tax-year 2026 figures. RMDs use the IRS Uniform Lifetime Table. The 2026 Medicare income thresholds and Part B + Part D surcharges are modelled with the normal two-year MAGI lookback. Future thresholds and surcharges are indexed using your inflation assumption.</p>
   <p><strong>India assumptions.</strong> Section 89A and Form 10EE address timing for specified foreign retirement accounts. They do not create a stated Roth exemption. The Roth menu therefore runs three assumptions. Treaty pension treatment, RNOR years, foreign-tax credits and Indian residency outcomes depend on facts the calculator cannot establish.</p>
   <p><strong>Limits.</strong> This is one deterministic path. It does not model market sequence risk, AMT, NIIT, itemised deductions, tax-exempt interest, state residency after a move, expatriation tax, inherited-account tax, long-term care or plan-specific distribution rules. The temporary enhanced senior deduction is included only for calendar years 2026 through 2028. After-tax account values use a fixed ten-year marginal drawdown estimate, not a one-year liquidation. Modelled tax excludes tax on salary unrelated to this decision, but includes the extra working-year tax created by giving up the pre-tax deduction. When conversion tax is paid from brokerage, tax triggered by selling brokerage assets is not separately grossed up. Taxable-account dividend and capital-gain-distribution drag before withdrawal is not modelled. Early-withdrawal penalties and account-access rules before age 59½ are not modelled. India tax slabs and the entered exchange rate are held constant in today's terms.</p>
   <details class="sources"><summary>Methods and official sources</summary><ul><li><a href="https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill">IRS 2026 tax adjustments</a></li><li><a href="https://www.irs.gov/publications/p590b">IRS Publication 590-B and Uniform Lifetime Table</a></li><li><a href="https://www.irs.gov/newsroom/check-your-eligibility-for-the-new-enhanced-deduction-for-seniors">IRS enhanced senior deduction</a></li><li><a href="https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles">CMS 2026 Medicare premiums and IRMAA</a></li><li><a href="https://secure.ssa.gov/poms.nsf/links/0601101030">SSA IRMAA two-year lookback</a></li><li><a href="https://www.incometaxindia.gov.in/w/section-89a-42">India Section 89A</a></li><li><a href="https://www.irs.gov/pub/irs-trty/india.pdf">US-India income-tax treaty</a></li></ul></details>
@@ -1082,7 +1133,7 @@ let LAST=null,INPUT_MODE="advanced",renderTimer=null;const DEFAULTS={};
 function render(){
   const inp=readInputs();validateInputs(inp);document.querySelectorAll(".spouse-row").forEach(el=>el.style.display=inp.filing==="mfj"?"":"none");document.querySelectorAll(".row.nri").forEach(el=>el.style.display=inp.plan==="india"?"":"none");
   const base=simulate(inp,"pre"),roth=simulate(inp,"roth"),brok=simulate(inp,"brokerage"),set={base,roth,brok},analysis=analyseSet(inp,set);LAST={inp,...set,analysis};
-  drawAnswer(inp,set,analysis);drawBreakChart(set,analysis);drawRmd(inp,base);drawChart(base.rows,inp,base.rmdAge);drawCards(inp,set,analysis);drawOrderTable(inp);drawSensitivity(inp);drawLedger(inp,base);drawChecks(inp,base,analysis);drawAudit(set);stampPrintMeta();
+  drawAnswer(inp,set,analysis);drawBreakChart(set,analysis);drawRmd(inp,base);drawChart(base.rows,inp,base.rmdAge);drawCards(inp,set,analysis);drawOrderTable(inp);drawSensitivity(inp);drawLedger(inp,base);drawChecks(inp,base,analysis);drawActionTimeline(inp,set,analysis);stampPrintMeta();
 }
 function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(render,70);}
 function formatBE(be){return be.age?"Age "+Math.round(be.age):"Not by 95";}
@@ -1164,7 +1215,84 @@ function drawChecks(inp,base,a){
   else{items.push({t:"Check whether your plan offers Roth contributions or Roth matching",p:"Plan rules differ. The model keeps employer matching pre-tax unless you change the amount entered.",w:"This year"});items.push({t:"Keep enough taxable liquidity for conversion tax",p:"A brokerage balance can fund conversion tax without creating another pre-tax withdrawal.",w:"Ongoing"});}
   $("checks").innerHTML=items.map(o=>`<li><div><h4>${o.t}</h4><p>${o.p}</p><div class="when">${o.w}</div></div></li>`).join("");
 }
-function drawAudit(set){const rows=[];for(const s of [set.base,set.roth,set.brok])for(const r of s.rows)rows.push(`<tr><td>${strategyName(s.mode)}</td><td>${r.age}</td><td>${usd(r.outcomeValue)}</td><td>${usd(r.afterTax)}</td><td>${usd(r.pre+r.roth+r.taxB)}</td><td>${usd(r.rmd)}</td><td>${usd(r._tax/r.infFac)}</td><td>${usd(r.irmaa)}</td><td>${usd(r._shortfall/r.infFac)}</td></tr>`);$("auditRows").innerHTML=rows.join("");}
+function rowAtAge(s,age){return s.rows.find(r=>Math.round(r.age)===Math.round(age));}
+function realAmount(row,value){return Number.isFinite(value)?value/row.infFac:0;}
+function withdrawalSignature(row){
+  const tax=realAmount(row,row._wTax),pre=Math.max(0,realAmount(row,row._wPre)-row.rmd),roth=realAmount(row,row._wRoth);
+  return [tax>100?"tax":"",pre>100?"pre":"",roth>100?"roth":""].filter(Boolean).join("+")||"rmd-only";
+}
+function timelineAges(inp,set){
+  const ages=new Set(),strategies=[set.base,set.roth,set.brok],start=Math.ceil(inp.retAge),end=END_AGE;
+  const add=a=>{a=Math.round(a);if(Number.isFinite(a)&&a>=start&&a<=end)ages.add(a);};
+  add(start);add(inp.ssAge);add(set.base.rmdAgeA);
+  if(inp.filing==="mfj")add(inp.age+(set.base.rmdAgeB-inp.spouseAge));
+  if(inp.plan==="india"){const move=Math.max(inp.moveAge,inp.retAge);add(move);add(move+inp.rnorYears);}
+  [80,85,90,95].forEach(add);
+  for(const s of strategies){
+    for(let i=0;i<s.rows.length;i++){
+      const r=s.rows[i],p=i?s.rows[i-1]:null;
+      const conv=realAmount(r,r._conv),short=realAmount(r,r._shortfall);
+      if(conv>100)add(r.age);
+      if(r.rmd>100&&(!p||p.rmd<=100))add(r.age);
+      if(realAmount(r,r._ss)>100&&(!p||realAmount(p,p._ss)<=100))add(r.age);
+      if(short>100&&(!p||realAmount(p,p._shortfall)<=100))add(r.age);
+      if(p&&(r.inIndia!==p.inIndia||r.isRnor!==p.isRnor||r.isRor!==p.isRor))add(r.age);
+      if(p&&(r.irmaaTier!==p.irmaaTier||((r.irmaa>100)!==(p.irmaa>100))))add(r.age);
+      if(p&&withdrawalSignature(r)!==withdrawalSignature(p))add(r.age);
+      if(p&&p.pre>100&&r.pre<=100)add(r.age);
+      if(p&&p.taxB>100&&r.taxB<=100)add(r.age);
+      if(p&&p.roth>100&&r.roth<=100)add(r.age);
+    }
+  }
+  return [...ages].sort((a,b)=>a-b);
+}
+function timelineLabel(age,inp,set){
+  const labels=[],base=set.base,move=Math.max(inp.moveAge,inp.retAge),spouseRmdAge=inp.age+(base.rmdAgeB-inp.spouseAge);
+  if(age===Math.round(inp.retAge))labels.push("Retirement starts");
+  if(age===Math.round(inp.ssAge))labels.push("Social Security");
+  if(age===Math.round(base.rmdAgeA))labels.push("Your RMDs start");
+  if(inp.filing==="mfj"&&age===Math.round(spouseRmdAge))labels.push("Spouse RMDs start");
+  if(inp.plan==="india"&&age===Math.round(move))labels.push("Move to India");
+  if(inp.plan==="india"&&inp.rnorYears>0&&age===Math.round(move+inp.rnorYears))labels.push("RNOR ends");
+  const rows=[set.base,set.roth,set.brok].map(s=>rowAtAge(s,age)).filter(Boolean);
+  if(rows.some(r=>realAmount(r,r._conv)>100))labels.push("Roth conversion");
+  if(rows.some((r,idx)=>{const s=[set.base,set.roth,set.brok][idx],i=s.rows.indexOf(r),p=i>0?s.rows[i-1]:null;return p&&r.irmaaTier!==p.irmaaTier;}))labels.push("IRMAA change");
+  if(rows.some((r,idx)=>{const s=[set.base,set.roth,set.brok][idx],i=s.rows.indexOf(r),p=i>0?s.rows[i-1]:null;return realAmount(r,r._shortfall)>100&&(!p||realAmount(p,p._shortfall)<=100);}))labels.push("Shortfall begins");
+  if([80,85,90,95].includes(age))labels.push("Checkpoint");
+  return [...new Set(labels)].join(" · ")||"Plan change";
+}
+function actionItems(row,prev,inp){
+  const items=[],taxW=realAmount(row,row._wTax),preW=realAmount(row,row._wPre),rothW=realAmount(row,row._wRoth),extraPre=Math.max(0,preW-row.rmd),conv=realAmount(row,row._conv),ss=realAmount(row,row._ss),surplus=realAmount(row,row._surplus),short=realAmount(row,row._shortfall);
+  if(!prev||row.age===Math.round(inp.retAge))items.push({t:"Retire and begin the planned withdrawal sequence.",c:"primary"});
+  if(prev&&row.inIndia&&!prev.inIndia)items.push({t:row.isRnor?"Move to India. RNOR period begins.":"Move to India as an ordinary resident.",c:"primary"});
+  if(prev&&!row.isRnor&&prev.isRnor)items.push({t:"RNOR ends. Review Indian worldwide-income taxation.",c:"primary"});
+  if(ss>100&&(!prev||realAmount(prev,prev._ss)<=100))items.push({t:`Start Social Security: ${usd(ss)} per year.`,c:"primary"});
+  if(conv>100)items.push({t:`Convert ${usd(conv)} from pre-tax to Roth.`,c:"primary"});
+  if(row.rmd>100)items.push({t:`Take the required RMD of ${usd(row.rmd)}.`});
+  if(taxW>100)items.push({t:`Use ${usd(taxW)} from brokerage for spending and tax.`});
+  if(extraPre>100)items.push({t:`Use ${usd(extraPre)} of additional pre-tax withdrawals.`});
+  if(rothW>100)items.push({t:`Use ${usd(rothW)} from Roth.`});
+  if(surplus>100)items.push({t:`Reinvest ${usd(surplus)} of excess cash in brokerage.`});
+  if(row.irmaa>100&&(!prev||row.irmaaTier!==prev.irmaaTier||(prev.irmaa<=100)))items.push({t:`Allow ${usd(row.irmaa)} for IRMAA.`});
+  if(short>100)items.unshift({t:`Funding shortfall: ${usd(short)}. Reduce spending or add another income source.`,c:"danger"});
+  if(prev&&prev.taxB>100&&row.taxB<=100)items.unshift({t:"Brokerage is depleted. The withdrawal source changes.",c:"primary"});
+  if(prev&&prev.pre>100&&row.pre<=100)items.unshift({t:"Pre-tax accounts are depleted.",c:"primary"});
+  if(prev&&prev.roth>100&&row.roth<=100)items.unshift({t:"Roth account is depleted.",c:"primary"});
+  if(!items.length)items.push({t:"Continue the current withdrawal plan."});
+  const seen=new Set();return items.filter(o=>{if(seen.has(o.t))return false;seen.add(o.t);return true;}).slice(0,5);
+}
+function timelineCell(s,row,prev,inp,analysis){
+  const short=realAmount(row,row._shortfall),items=actionItems(row,prev,inp),preferred=s.mode===analysis.best.mode;
+  return `<article class="timeline-cell${preferred?" preferred":""}${short>100?" warning":""}"><div class="strategy-mobile">${strategyName(s.mode)}${preferred?" · projected winner":""}</div><ul>${items.map((o,i)=>`<li class="${o.c||(i===0?"primary":"")}">${o.t}</li>`).join("")}</ul><div class="timeline-metrics"><span>Annual tax<b>${usd(realAmount(row,row._tax))}</b></span><span>After-tax value<b>${usd(row.afterTax)}</b></span><span>Raw balance<b>${usd(row.pre+row.roth+row.taxB)}</b></span><span>IRMAA<b>${usd(row.irmaa)}</b></span></div></article>`;
+}
+function drawActionTimeline(inp,set,analysis){
+  const strategies=[set.base,set.roth,set.brok],ages=timelineAges(inp,set);
+  $("timelineHeads").innerHTML=strategies.map(s=>`<div class="${s.mode===analysis.best.mode?"preferred":""}">${strategyName(s.mode)}${s.mode===analysis.best.mode?" · projected winner":""}</div>`).join("");
+  $("timelineRows").innerHTML=ages.map(age=>{
+    const cells=strategies.map(s=>{const row=rowAtAge(s,age),idx=row?s.rows.indexOf(row):-1,prev=idx>0?s.rows[idx-1]:null;return row?timelineCell(s,row,prev,inp,analysis):`<article class="timeline-cell"><div class="strategy-mobile">${strategyName(s.mode)}</div><ul><li>No projection row for this age.</li></ul></article>`;}).join("");
+    return `<div class="timeline-year"><div class="timeline-age"><b>${age}</b><span>${timelineLabel(age,inp,set)}</span></div><div class="timeline-strategies">${cells}</div></div>`;
+  }).join("");
+}
 
 function captureDefaults(){document.querySelectorAll("input,select").forEach(el=>DEFAULTS[el.id]=el.value);DEFAULTS.__plan=document.querySelector("#segPlan button[aria-pressed=true]").dataset.plan;}
 function flash(msg){const el=$("tbMsg");el.textContent=msg;clearTimeout(flash._t);flash._t=setTimeout(()=>el.textContent="",3200);}
