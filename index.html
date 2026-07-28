@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Pre-Tax Trap Analyzer — rupeestories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* sampled from the NRI Retirement Path Optimizer */
+  --navy:#162136;
+  --navy-deep:#0E1727;
+  --navy-blue:#122B49;
+  --gold:#D6A84F;
+  --gold-deep:#AD8B4A;
+  --gold-soft:#EBCB8B;
+  --cream:#F5F2E9;
+  --cream-2:#EFEBE0;
+  --card:#FFFFFF;
+  --accent:#0F4C81;
+  --ink:#1C2636;
+  --ink-soft:#4A5566;
+  --muted:#7C8190;
+  --line:#E4DFD3;
+  --line-soft:#EFEBE1;
+  --us:#0F4C81;
+  --india:#A8762A;
+  --alert:#B0392C;
+  --ok:#2E7D5B;
+  --warn:#C08A2E;
+  --display:"Lato",system-ui,sans-serif;
+  --body:"Lato",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px 90px}
+
+/* ---------- hero ---------- */
+.hero{
+  background:
+    radial-gradient(760px 340px at 10% -20%, rgba(190,150,80,.30), transparent 62%),
+    radial-gradient(900px 500px at 95% 60%, rgba(18,58,98,.75), transparent 65%),
+    linear-gradient(120deg,#0E1727 0%, #162136 48%, #122B49 100%);
+  border-bottom:4px solid var(--gold-deep);
+  padding:26px 0 54px;
+}
+.hero-in{max-width:1140px;margin:0 auto;padding:0 22px}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.hero-top a,.hero-top span{
+  font-family:var(--body);font-size:12.5px;font-weight:900;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--gold);text-decoration:none;
+}
+.hero h1{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(32px,5.6vw,60px);line-height:1.06;letter-spacing:-.015em;
+  color:#fff;text-align:center;margin:34px auto 16px;max-width:19ch;
+}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.dek{
+  text-align:center;color:#C3CCD9;font-size:17px;line-height:1.5;
+  max-width:60ch;margin:0 auto 26px;
+}
+.pills{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.pill{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  color:#E4EAF2;border-radius:999px;padding:8px 18px;font-size:14px;
+}
+
+/* ---------- sections ---------- */
+section{padding:44px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.sec-num{
+  font-family:var(--body);font-size:11.5px;letter-spacing:.15em;font-weight:900;
+  color:var(--gold-deep);text-transform:uppercase;
+}
+.sec-head h2{
+  font-family:var(--display);font-weight:900;font-size:clamp(21px,3vw,28px);
+  letter-spacing:-.01em;margin:0;flex:1;color:var(--navy);
+}
+.sec-note{font-size:13.5px;color:var(--muted);max-width:40ch}
+
+.card-s{
+  background:var(--card);border-radius:14px;
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+  border-left:4px solid var(--accent);
+}
+
+/* ---------- inputs ---------- */
+.panel{
+  background:var(--card);border-radius:14px;border-left:4px solid var(--accent);
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+  padding:6px 26px 24px;
+}
+.grp-label{
+  font-family:var(--body);font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);font-weight:900;padding:22px 0 8px;border-bottom:1px solid var(--line);
+}
+.rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0 36px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+.row label{font-size:14.5px;color:var(--ink-soft);flex:1}
+.row .hint{display:block;font-size:11.5px;color:var(--muted);line-height:1.35}
+.row input[type=number],.row select{
+  font-family:var(--mono);font-size:14px;font-weight:500;color:var(--navy);
+  background:var(--cream);border:1px solid var(--line);border-radius:7px;
+  width:118px;text-align:right;padding:6px 9px;
+}
+.row select{width:158px;text-align:left;cursor:pointer}
+.row input:focus,.row select:focus,button:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:8px;overflow:hidden}
+.seg button{
+  font-family:var(--body);font-size:13px;font-weight:700;
+  background:var(--card);border:none;padding:8px 14px;cursor:pointer;color:var(--accent);
+}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+
+/* ---------- verdict ---------- */
+.verdict{
+  margin-top:26px;background:var(--card);border-radius:14px;overflow:hidden;
+  border-left:4px solid var(--gold-deep);
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+}
+.verdict-top{display:flex;flex-wrap:wrap;align-items:stretch}
+.vbadge{padding:22px 26px;border-right:1px solid var(--line-soft);min-width:196px}
+.vbadge .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:900}
+.vbadge .v{font-family:var(--display);font-weight:900;font-size:38px;line-height:1.08;letter-spacing:-.02em;margin-top:5px;color:var(--navy)}
+.vbadge .s{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+.vstate{flex:1;padding:22px 26px;display:flex;flex-direction:column;justify-content:center;min-width:280px;background:var(--cream)}
+.vstate .tag{font-size:11.5px;letter-spacing:.14em;font-weight:900;text-transform:uppercase;margin-bottom:7px}
+.vstate p{margin:0;font-size:15px;line-height:1.55;color:var(--ink-soft)}
+.t-past{color:var(--alert)} .t-at{color:var(--warn)} .t-below{color:var(--ok)}
+
+/* ---------- chart ---------- */
+.chartbox{
+  margin-top:22px;background:var(--card);border-radius:14px;border-left:4px solid var(--accent);
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+  padding:20px 14px 10px;
+}
+svg.chart{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:18px;padding:12px 16px 4px;font-size:12.5px;color:var(--ink-soft)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* ---------- scenario cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:18px}
+.card{
+  background:var(--card);border-radius:14px;padding:22px 22px 24px;position:relative;
+  border-left:4px solid var(--line);
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+}
+.card.best{border-left:4px solid var(--gold-deep)}
+.card .flag{
+  position:absolute;top:16px;right:18px;background:var(--gold);color:var(--navy);
+  font-size:10px;letter-spacing:.11em;padding:4px 10px;font-weight:900;border-radius:999px;
+}
+.card h3{font-family:var(--display);font-weight:900;font-size:18px;margin:0 0 4px;letter-spacing:-.01em;color:var(--navy)}
+.card .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px;min-height:34px;line-height:1.45}
+.metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:13px;color:var(--ink-soft)}
+.metric b{font-family:var(--mono);font-weight:600;font-size:14.5px;color:var(--navy)}
+.delta{font-family:var(--mono);font-size:12.5px;margin-top:14px;font-weight:600}
+.delta.pos{color:var(--ok)} .delta.neg{color:var(--alert)}
+
+/* ---------- ledger spread ---------- */
+.spread{
+  background:var(--card);border-radius:14px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+  display:grid;grid-template-columns:1fr 58px 1fr;
+}
+.col-head{padding:16px 20px 14px;background:var(--navy)}
+.col-head .j{font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:900}
+.col-head .n{font-family:var(--display);font-weight:900;font-size:19px;margin-top:2px;color:#fff}
+.col-us .j{color:var(--gold-soft)} .col-in .j{color:var(--gold-soft)}
+.gutter{background:repeating-linear-gradient(to bottom,transparent 0 7px,var(--line-soft) 7px 8px)}
+.gut-head{height:100%;background:var(--navy)}
+.lrow{padding:15px 20px;border-bottom:1px solid var(--line-soft);min-height:78px}
+.lrow .lk{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:900}
+.lrow .lv{font-family:var(--display);font-size:17px;font-weight:900;margin:4px 0 3px}
+.lrow .ld{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.gcell{display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line-soft);min-height:78px}
+.mark{
+  font-family:var(--body);font-size:15px;font-weight:900;width:30px;height:30px;
+  border-radius:50%;display:grid;place-items:center;color:#fff;
+  box-shadow:0 0 0 7px var(--card);
+}
+.mark.bad{background:var(--alert)}
+.mark.ok{background:var(--ok)}
+.mark.warn{background:var(--warn)}
+.m-mark{display:none;font-weight:900;margin-right:8px}
+.m-mark.bad{color:var(--alert)} .m-mark.ok{color:var(--ok)} .m-mark.warn{color:var(--warn)}
+
+/* ---------- checklist ---------- */
+ol.checks{
+  list-style:none;counter-reset:c;padding:6px 26px;margin:0;
+  background:var(--card);border-radius:14px;border-left:4px solid var(--accent);
+  box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);
+}
+ol.checks li{counter-increment:c;display:grid;grid-template-columns:46px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-soft)}
+ol.checks li:last-child{border-bottom:none}
+ol.checks li::before{
+  content:counter(c,decimal-leading-zero);font-family:var(--mono);font-size:13px;
+  font-weight:600;color:var(--gold-deep);padding-top:2px;
+}
+ol.checks h4{font-family:var(--display);font-weight:900;font-size:16.5px;margin:0 0 4px;color:var(--navy)}
+ol.checks p{margin:0;font-size:14px;color:var(--ink-soft)}
+ol.checks .when{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep);font-weight:900;margin-top:7px}
+
+footer{
+  margin-top:52px;padding:24px 26px;border-radius:14px;background:var(--cream-2);
+  font-size:12.5px;color:var(--muted);line-height:1.65;
+}
+footer strong{color:var(--ink-soft)}
+footer p{margin:0 0 12px}
+footer p:last-child{margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr}
+  .gutter,.gcell{display:none}
+  .lrow{min-height:0;height:auto !important}
+  .m-mark{display:inline}
+  .vbadge{border-right:none;border-bottom:1px solid var(--line-soft);width:100%}
+}
+
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-in">
+    <div class="hero-top">
+      <a href="https://reddit.com/r/rupeestories">r/rupeestories</a>
+      <a href="https://rupeestories.substack.com">rupeestories.substack.com</a>
+    </div>
+    <h1>Your 401(k) is a bet on <em>where you die</em></h1>
+    <p class="dek">Most retirement calculators tell you whether you have enough. This one tells you what kind of money you have, and which country's tax code it was built for.</p>
+    <div class="pills">
+      <span class="pill">No login</span>
+      <span class="pill">No data collected</span>
+      <span class="pill">Runs in your browser</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ INPUTS ============ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">INPUT</span>
+    <h2>Your position today</h2>
+    <span class="sec-note">Nothing leaves your browser. No storage, no network calls.</span>
+  </div>
+
+  <div class="panel">
+    <div class="grp-label">Household</div>
+    <div class="rows">
+      <div class="row"><label for="age">Your age</label><input type="number" id="age" value="48" min="25" max="80"></div>
+      <div class="row"><label for="retAge">Retirement age</label><input type="number" id="retAge" value="60" min="40" max="80"></div>
+      <div class="row"><label for="filing">Filing status</label>
+        <select id="filing"><option value="mfj">Married jointly</option><option value="single">Single</option></select></div>
+      <div class="row"><label for="birthYear">Birth year <span class="hint">sets RMD age: 73 or 75</span></label><input type="number" id="birthYear" value="1978" min="1940" max="2005"></div>
+    </div>
+
+    <div class="grp-label">Balances today (USD)</div>
+    <div class="rows">
+      <div class="row"><label for="bPre">Pre-tax <span class="hint">401(k) + traditional IRA</span></label><input type="number" id="bPre" value="1400000" step="10000"></div>
+      <div class="row"><label for="bRoth">Roth</label><input type="number" id="bRoth" value="180000" step="10000"></div>
+      <div class="row"><label for="bTax">Taxable brokerage</label><input type="number" id="bTax" value="350000" step="10000"></div>
+      <div class="row"><label for="basis">Cost basis in brokerage <span class="hint">what you paid, not what it's worth</span></label><input type="number" id="basis" value="200000" step="10000"></div>
+    </div>
+
+    <div class="grp-label">Annual saving until retirement (USD)</div>
+    <div class="rows">
+      <div class="row"><label for="cPre">Your pre-tax contribution</label><input type="number" id="cPre" value="24500" step="500"></div>
+      <div class="row"><label for="cMatch">Employer match <span class="hint">always lands pre-tax</span></label><input type="number" id="cMatch" value="12000" step="500"></div>
+      <div class="row"><label for="cTax">Into brokerage</label><input type="number" id="cTax" value="15000" step="1000"></div>
+    </div>
+
+    <div class="grp-label">Assumptions</div>
+    <div class="rows">
+      <div class="row"><label for="ret">Return, %/yr</label><input type="number" id="ret" value="6.5" step="0.25"></div>
+      <div class="row"><label for="infl">Inflation, %/yr</label><input type="number" id="infl" value="2.7" step="0.1"></div>
+      <div class="row"><label for="spend">Retirement spend, today's $</label><input type="number" id="spend" value="130000" step="5000"></div>
+      <div class="row"><label for="ss">Social Security at FRA <span class="hint">household, annual, today's $</span></label><input type="number" id="ss" value="62000" step="1000"></div>
+      <div class="row"><label for="ssAge">Claim Social Security at</label><input type="number" id="ssAge" value="70" min="62" max="70"></div>
+      <div class="row"><label for="stateRate">US state tax on income, %</label><input type="number" id="stateRate" value="0" step="0.5"></div>
+      <div class="row"><label for="mrNow">Your marginal rate today, % <span class="hint">what the deduction is worth right now</span></label><input type="number" id="mrNow" value="24" step="1"></div>
+      <div class="row"><label for="order">Withdrawal order</label>
+        <select id="order">
+          <option value="conv">Brokerage first</option>
+          <option value="pre">Pre-tax first</option>
+          <option value="prorata">Pro-rata</option>
+        </select></div>
+    </div>
+
+    <div class="grp-label">Where do you actually retire?</div>
+    <div class="rows">
+      <div class="row"><label>Plan</label>
+        <span><span class="seg" id="segPlan">
+          <button data-plan="us" aria-pressed="true">Stay in US</button>
+          <button data-plan="india" aria-pressed="false">Move to India</button>
+        </span></span>
+      </div>
+      <div class="row nri"><label for="moveAge">Age you move to India</label><input type="number" id="moveAge" value="62" min="40" max="85"></div>
+      <div class="row nri"><label for="rnor">RNOR years available <span class="hint">2–3 if non-resident 9 of last 10 years</span></label>
+        <select id="rnor"><option value="3">3 years</option><option value="2" selected>2 years</option><option value="1">1 year</option><option value="0">None</option></select></div>
+      <div class="row nri"><label for="usStatus">US status after the move <span class="hint">the treaty saving clause turns on this</span></label>
+        <select id="usStatus"><option value="keep">Keep green card</option><option value="drop">Surrender it</option></select></div>
+      <div class="row nri"><label for="periodic">401(k) withdrawal form <span class="hint">DTAA Article 20 protects periodic only</span></label>
+        <select id="periodic"><option value="1">Periodic (SWP)</option><option value="0">Lump sum at move</option></select></div>
+      <div class="row nri"><label for="rothIndia">India's treatment of Roth <span class="hint">genuinely unsettled — model both</span></label>
+        <select id="rothIndia"><option value="1">Taxed (conservative)</option><option value="0">Respected as tax-free</option></select></div>
+      <div class="row nri"><label for="spendIndia">Spend in India, today's $ <span class="hint">cost of living usually drops</span></label><input type="number" id="spendIndia" value="80000" step="5000"></div>
+      <div class="row nri"><label for="rnorFill">Use the RNOR window <span class="hint">convert pre-tax to Roth while India cannot tax it</span></label>
+        <select id="rnorFill">
+          <option value="0">Do nothing</option>
+          <option value="22">Convert to top of 22%</option>
+          <option value="24" selected>Convert to top of 24%</option>
+          <option value="32">Convert to top of 32%</option>
+        </select></div>
+      <div class="row nri"><label for="fx">USD to INR</label><input type="number" id="fx" value="88" step="1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VERDICT ============ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>The forced withdrawal</h2>
+    <span class="sec-note">What the IRS makes you take out, whether you want it or not.</span>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-top">
+      <div class="vbadge">
+        <div class="k">Pre-tax at RMD age</div>
+        <div class="v num" id="vBal">—</div>
+        <div class="s" id="vBalSub">—</div>
+      </div>
+      <div class="vbadge">
+        <div class="k">First forced withdrawal</div>
+        <div class="v num" id="vRmd">—</div>
+        <div class="s" id="vRmdSub">—</div>
+      </div>
+      <div class="vbadge">
+        <div class="k">Bracket it lands you in</div>
+        <div class="v num" id="vBracket">—</div>
+        <div class="s" id="vBracketSub">—</div>
+      </div>
+      <div class="vstate">
+        <div class="tag" id="vTag">—</div>
+        <p id="vText">—</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chartbox">
+    <svg class="chart" id="chart" viewBox="0 0 900 380" role="img" aria-label="Projected taxable income by age against tax bracket thresholds"></svg>
+    <div class="legend">
+      <span><i style="background:#6E93BC"></i>Taxable Social Security</span>
+      <span><i style="background:#B0392C"></i>Forced RMD</span>
+      <span><i style="background:#DED8C9"></i>Other withdrawals</span>
+      <span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Bracket thresholds, today's dollars</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REDIRECT ============ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2>The redirect</h2>
+    <span class="sec-note">Same dollars saved. Different bucket. Match stays pre-tax in every case.</span>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- ============ LEDGER ============ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2>The reconciliation</h2>
+    <span class="sec-note">Two tax systems reading the same account. Marks in the gutter show where they disagree.</span>
+  </div>
+
+  <div class="spread" id="spread">
+    <div class="col-us">
+      <div class="col-head"><div class="j">United States</div><div class="n">What the IRS sees</div></div>
+      <div id="usRows"></div>
+    </div>
+    <div class="gutter"><div class="gut-head"></div><div id="gutRows"></div></div>
+    <div class="col-in">
+      <div class="col-head"><div class="j">India</div><div class="n">What the ITD sees</div></div>
+      <div id="inRows"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACTIONS ============ -->
+<section>
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2>What to do about it</h2>
+    <span class="sec-note">Ordered by deadline, not by size.</span>
+  </div>
+  <ol class="checks" id="checks"></ol>
+</section>
+
+<footer>
+  <p><strong>Assumptions and limits.</strong> Federal brackets and the standard deduction use IRS Rev. Proc. 2025-32 figures for tax year 2026, indexed forward at your inflation rate. RMDs use the IRS Uniform Lifetime Table and begin at 73 for those born 1951–1959 and 75 for those born 1960 or later. Social Security taxation uses the standard provisional-income test. IRMAA tiers are estimates and lag actual income by two years. India uses the new-regime slabs with 4% cess and surcharge; the model applies a foreign tax credit against Indian liability where both countries tax the same dollar. Capital gains inside the brokerage are taxed at a flat long-term rate on the gain portion of each withdrawal. DTAA Article 20 relief on periodic pension payments is applied only when you model surrendering US status, because the treaty saving clause preserves US taxing rights over its own citizens and green card holders regardless of where they live.</p>
+  <p><strong>This is a projection, not advice.</strong> It is a single deterministic path, not a Monte Carlo. It ignores sequence-of-returns risk, long-term care, state estate tax, the temporary senior deduction, NIIT, and every fact specific to you. The India-side treatment of Roth accounts is genuinely unresolved — Section 89A and Form 10EE align the <em>timing</em> of Indian taxation with the US, but nothing in Indian law recognizes a Roth distribution as exempt. Model both outcomes; do not plan around one. Confirm everything with a cross-border CPA and a CA before you move money.</p>
+  <p>Built for r/rupeestories · rupeestories.substack.com</p>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* ---------------- constants ---------------- */
+const BR26 = {
+  mfj:    [[24800,.10],[100800,.12],[211400,.22],[403550,.24],[512450,.32],[768700,.35],[Infinity,.37]],
+  single: [[12400,.10],[50400,.12],[105700,.22],[201775,.24],[256225,.32],[640600,.35],[Infinity,.37]]
+};
+const STD26 = { mfj:32200, single:16100 };
+const STD65 = { mfj:1650, single:2050 };  // per person over 65
+/* 2026 long-term capital gains breakpoints, measured on total taxable income */
+const LTCG = { mfj:[98900, 613700], single:[49450, 545500] };
+const REBATE_87A = { limit:1200000, max:60000 };
+
+/* IRS Uniform Lifetime Table (2022+) */
+const ULT = {73:26.5,74:25.5,75:24.6,76:23.7,77:22.9,78:22.0,79:21.1,80:20.2,81:19.4,82:18.5,
+83:17.7,84:16.8,85:16.0,86:15.2,87:14.4,88:13.7,89:12.9,90:12.2,91:11.5,92:10.8,93:10.1,
+94:9.5,95:8.9,96:8.4,97:7.8,98:7.3,99:6.8,100:6.4};
+
+/* IRMAA 2026 estimate: MAGI floor -> combined Part B + D annual surcharge per person */
+const IRMAA = { mfj:[[218000,0],[272000,1300],[342000,3300],[410000,5300],[750000,7300],[Infinity,7950]],
+                single:[[109000,0],[136000,1300],[171000,3300],[205000,5300],[500000,7300],[Infinity,7950]] };
+
+/* India new regime slabs, INR */
+const IN_SLABS = [[400000,0],[800000,.05],[1200000,.10],[1600000,.15],[2000000,.20],[2400000,.25],[Infinity,.30]];
+const END_AGE = 95;
+
+/* ---------------- helpers ---------------- */
+const $ = id => document.getElementById(id);
+const N = id => parseFloat($(id).value) || 0;
+const usd = n => (n<0?"-":"") + "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+const usdK = n => { const a=Math.abs(n); const s=n<0?"-":"";
+  if (a>=1e6) return s+"$"+(a/1e6).toFixed(a>=1e7?1:2)+"M";
+  if (a>=1e3) return s+"$"+Math.round(a/1e3)+"K"; return s+"$"+Math.round(a); };
+
+function rmdAge(by){ return by>=1960 ? 75 : (by>=1951 ? 73 : 72); }
+
+function progressive(income, table){
+  let t=0, prev=0;
+  for (const [cap,rate] of table){
+    if (income>prev){ t += (Math.min(income,cap)-prev)*rate; prev=cap; } else break;
+  }
+  return t;
+}
+function marginalRate(income, table){
+  let prev=0;
+  for (const [cap,rate] of table){ if (income<=cap) return rate; prev=cap; }
+  return .37;
+}
+
+function fedTax(ordinary, ltcg, filing, infFac, bothOver65){
+  const tbl = BR26[filing].map(([c,r])=>[c===Infinity?Infinity:c*infFac, r]);
+  let std = STD26[filing]*infFac;
+  if (bothOver65) std += STD65[filing]*infFac*(filing==="mfj"?2:1);
+
+  const taxableOrd = Math.max(0, ordinary - std);
+  const stdUsedByOrd = Math.min(ordinary, std);
+  const gains = Math.max(0, ltcg - Math.max(0, std - stdUsedByOrd));
+
+  // Long-term gains stack on top of ordinary taxable income and fill 0/15/20 in turn.
+  const [t0, t15] = LTCG[filing].map(v=>v*infFac);
+  const floor = taxableOrd;
+  const at0  = Math.max(0, Math.min(gains, t0 - floor));
+  const rest = gains - at0;
+  const at15 = Math.max(0, Math.min(rest, t15 - Math.max(floor, t0)));
+  const at20 = Math.max(0, rest - at15);
+
+  return progressive(taxableOrd, tbl) + at15*0.15 + at20*0.20;
+}
+
+function ssTaxablePortion(ssGross, otherOrdinary, otherLtcg, filing){
+  if (ssGross<=0) return 0;
+  const prov = otherOrdinary + otherLtcg + 0.5*ssGross;
+  const b1 = filing==="mfj"?32000:25000, b2 = filing==="mfj"?44000:34000;
+  if (prov<=b1) return 0;
+  if (prov<=b2) return Math.min(0.5*(prov-b1), 0.5*ssGross);
+  const tier1 = Math.min(0.5*(b2-b1), 0.5*ssGross);
+  return Math.min(0.85*(prov-b2)+tier1, 0.85*ssGross);
+}
+
+function irmaaSurcharge(magi, filing, infFac){
+  const tbl = IRMAA[filing]; const heads = filing==="mfj"?2:1;
+  for (const [floor,amt] of tbl){ if (magi <= floor*infFac) return amt*infFac*heads; }
+  return tbl[tbl.length-1][1]*infFac*heads;
+}
+function irmaaTier(magi, filing, infFac){
+  const tbl = IRMAA[filing];
+  for (let i=0;i<tbl.length;i++){ if (magi <= tbl[i][0]*infFac) return i; }
+  return tbl.length-1;
+}
+
+function indiaTax(inr){
+  // Tax before marginal relief, at a given income.
+  const raw = inc => {
+    let t = progressive(inc, IN_SLABS);
+    if (inc <= REBATE_87A.limit) t = Math.max(0, t - REBATE_87A.max);
+    let sur = 0;
+    if (inc > 20000000) sur = .25; else if (inc > 10000000) sur = .15;
+    else if (inc > 5000000) sur = .10;
+    return t*(1+sur);
+  };
+  let t = raw(inr);
+  // Marginal relief: crossing a threshold cannot cost more tax than the income gained.
+  // Without this the surcharge steps behave as cliffs with absurd marginal rates.
+  for (const th of [REBATE_87A.limit, 5000000, 10000000, 20000000]){
+    if (inr > th) t = Math.min(t, raw(th) + (inr - th));
+  }
+  return t*1.04; // health & education cess
+}
+
+/* One year of tax, both jurisdictions. Amounts in nominal USD.
+   art20 = periodic private pension sheltered from US tax by DTAA Article 20,
+   which requires the taxpayer to be a US non-resident (saving clause). */
+function yearTax(wPre, wRoth, ltcg, ssGross, ctx){
+  const {infFac, bothOver65, inIndia, isRor, art20, inp} = ctx;
+
+  const usOrd = art20 ? 0 : wPre;
+  const ssTaxable = ssTaxablePortion(ssGross, usOrd, ltcg, inp.filing);
+  const fed = fedTax(usOrd + ssTaxable, ltcg, inp.filing, infFac, bothOver65);
+  const stateT = inIndia ? 0 : (usOrd + ssTaxable + ltcg) * inp.stateRate;
+  const magi = usOrd + ssTaxable + ltcg;
+  const onMedicare = bothOver65 && !inIndia;
+  const irm  = onMedicare ? irmaaSurcharge(magi, inp.filing, infFac) : 0;
+  const tier = onMedicare ? irmaaTier(magi, inp.filing, infFac) : 0;
+
+  let indT = 0;
+  if (isRor){
+    // India taxes worldwide income of an ordinary resident. Slabs are applied to real
+    // income and the result reinflated, matching how US brackets are indexed above.
+    let realUsd = (wPre + ltcg + ssGross) / infFac;
+    if (inp.rothTaxedInIndia) realUsd += wRoth / infFac;
+    const gross = indiaTax(realUsd * inp.fx) / inp.fx * infFac;
+    // Relief under DTAA Article 25: credit for US tax actually paid on the same income.
+    indT = Math.max(0, gross - (fed + stateT));
+  }
+  return { us: fed + stateT, india: indT, irmaa: irm, magi, tier, ssTaxable,
+           total: fed + stateT + indT + irm };
+}
+
+/* ---------------- core simulation ---------------- */
+/*
+ mode: "pre" | "roth" | "brokerage" — where the personal contribution goes.
+ Returns year-by-year rows plus lifetime aggregates. All internal math is nominal;
+ display values are deflated to today's dollars.
+*/
+function simulate(inp, mode){
+  const r = inp.ret, g = inp.infl;
+  let pre = inp.bPre, roth = inp.bRoth, tax = inp.bTax, basis = inp.basis;
+  const rAge = rmdAge(inp.birthYear);
+
+  // ---- accumulation ----
+  for (let a=inp.age; a<inp.retAge; a++){
+    const infFac = Math.pow(1+g, a-inp.age);
+    const cPersonal = inp.cPre*infFac;
+    const cBrok = inp.cTax*infFac;
+    pre  = pre*(1+r)  + inp.cMatch*infFac + (mode==="pre"  ? cPersonal : 0);
+    roth = roth*(1+r) + (mode==="roth" ? cPersonal : 0);
+    // Roth contributions are made with after-tax dollars, so the same gross salary
+    // buys less. Charge the difference at the current marginal rate.
+    // Losing the deduction costs cPersonal * marginal rate, paid out of cash flow.
+    // Charge it against brokerage saving so every scenario spends the same gross salary.
+    let brokAdd = cBrok;
+    if (mode==="brokerage") brokAdd += cPersonal*(1-inp.mrNow);
+    if (mode==="roth")      brokAdd -= cPersonal*inp.mrNow;
+    tax = Math.max(0, tax*(1+r) + brokAdd);
+    basis = Math.max(0, basis + brokAdd);
+  }
+
+  // ---- retirement ----
+  const rows = [];
+  let lifeFedTax=0, lifeIndiaTax=0, lifeIrmaa=0, lifeSpend=0;
+  const movedYear = inp.plan==="india" ? Math.max(inp.moveAge, inp.retAge) : Infinity;
+
+  for (let a=inp.retAge; a<=END_AGE; a++){
+    const pre0 = pre, roth0 = roth, tax0 = tax;
+    const t = a - inp.age;
+    const infFac = Math.pow(1+g, t);
+    const inIndia = a >= movedYear;
+    const yearsSinceMove = inIndia ? a - movedYear : -1;
+    const isRnor = inIndia && yearsSinceMove < inp.rnorYears;
+    const isRor = inIndia && !isRnor;
+    const bothOver65 = a >= 65;
+
+    const need = (inIndia ? inp.spendIndia : inp.spend)*infFac;
+    const ssGross = a >= inp.ssAge ? inp.ss*infFac : 0;
+
+    // Article 20 shelters periodic private-pension payments from US tax, but only for a
+    // US non-resident. The treaty saving clause lets the US keep taxing its own citizens
+    // and green card holders on worldwide income regardless of residence.
+    const art20 = isRor && inp.periodic && inp.usStatus === "drop";
+
+    // forced RMD
+    let rmd = 0;
+    if (a >= rAge){ const d = ULT[Math.min(a,100)] || 6.4; rmd = pre/d; }
+    // A lump sum is a real event: the whole balance comes out in the year of the move.
+    const lumpNow = inIndia && !inp.periodic && yearsSinceMove === 0;
+    if (lumpNow) rmd = pre;
+
+    // Withdraw to meet spending plus the tax that spending itself creates. This is a
+    // fixed point whose convergence rate is the marginal rate, so with combined US and
+    // India rates near 40% a handful of passes leaves a visible shortfall. 14 is ample.
+    let wPre = rmd, wTax = 0, wRoth = 0, estTax = 0;
+    for (let pass=0; pass<14; pass++){
+      let short = need + estTax - ssGross - rmd;
+      wPre = rmd; wTax = 0; wRoth = 0;
+      if (short > 0){
+        const availPre = Math.max(0, pre - rmd), availTax = tax, availRoth = roth;
+        if (inp.order === "prorata"){
+          const tot = availPre + availTax + availRoth;
+          if (tot > 0){
+            wPre  += Math.min(availPre,  short*availPre/tot);
+            wTax   = Math.min(availTax,  short*availTax/tot);
+            wRoth  = Math.min(availRoth, short*availRoth/tot);
+            let gap = short - ((wPre-rmd) + wTax + wRoth);
+            if (gap > 0){ const add = Math.min(gap, availPre-(wPre-rmd)); wPre += add; gap -= add; }
+            if (gap > 0){ const add = Math.min(gap, availTax-wTax); wTax += add; gap -= add; }
+            if (gap > 0){ wRoth += Math.min(gap, availRoth-wRoth); }
+          }
+        } else {
+          const seq = inp.order === "pre" ? ["pre","tax","roth"] : ["tax","pre","roth"];
+          for (const b of seq){
+            if (short <= 0) break;
+            if (b==="pre"){  const a=Math.min(short, availPre);  wPre += a; short -= a; }
+            if (b==="tax"){  const a=Math.min(short, availTax);  wTax  = a; short -= a; }
+            if (b==="roth"){ const a=Math.min(short, availRoth); wRoth = a; short -= a; }
+          }
+        }
+      }
+      const gf = tax > 0 ? Math.max(0, (tax - basis)/tax) : 0;
+      estTax = yearTax(wPre, wRoth, wTax*gf, ssGross,
+                       {infFac, bothOver65, inIndia, isRor, art20, inp}).total;
+    }
+
+    // RNOR window: India cannot tax foreign income yet, so conversions cost US tax only.
+    // Fill the chosen US bracket and move the money permanently out of the RMD base.
+    let converted = 0;
+    if (isRnor && inp.rnorFill > 0){
+      const gf0 = tax > 0 ? Math.max(0, (tax - basis)/tax) : 0;
+      const baseY = yearTax(wPre, wRoth, wTax*gf0, ssGross,
+                            {infFac, bothOver65, inIndia, isRor, art20, inp});
+      const tblY = BR26[inp.filing];
+      const capRow = tblY.find(([,r]) => Math.round(r*100) === inp.rnorFill);
+      if (capRow){
+        let std = STD26[inp.filing]*infFac;
+        if (bothOver65) std += STD65[inp.filing]*infFac*(inp.filing==="mfj"?2:1);
+        const ceiling = capRow[0]*infFac + std;
+        const headroom = Math.max(0, ceiling - baseY.magi);
+        converted = Math.min(headroom, Math.max(0, pre - wPre));
+      }
+    }
+
+    // settle balances
+    const gainFrac = tax > 0 ? Math.max(0, (tax - basis)/tax) : 0;
+    const ltcg = wTax * gainFrac;
+    basis -= wTax * (1 - gainFrac);
+    tax  = Math.max(0, tax - wTax);
+    pre  = Math.max(0, pre - wPre - converted);
+    roth = Math.max(0, roth - wRoth) + converted;
+
+    // surplus RMD after spending goes to brokerage
+    const totalIn = ssGross + wPre + wTax + wRoth;
+    const surplus = Math.max(0, totalIn - need - estTax);
+    tax += surplus; basis += surplus;
+
+    const y = yearTax(wPre + converted, wRoth, ltcg, ssGross,
+                      {infFac, bothOver65, inIndia, isRor, art20, inp});
+    // Conversion tax is paid out of pocket, which is what makes conversions efficient.
+    const convTax = converted > 0
+      ? y.total - yearTax(wPre, wRoth, ltcg, ssGross,
+                          {infFac, bothOver65, inIndia, isRor, art20, inp}).total
+      : 0;
+    if (convTax > 0){
+      const fromBrok = Math.min(convTax, tax);
+      tax -= fromBrok; basis = Math.max(0, basis - fromBrok);
+      pre = Math.max(0, pre - (convTax - fromBrok));
+    }
+
+    // True marginal rate: what one more dollar out of the pre-tax account actually costs,
+    // across both jurisdictions. A $5,000 bump avoids IRMAA cliff noise.
+    const yb = yearTax(wPre + converted + 5000, wRoth, ltcg, ssGross,
+                       {infFac, bothOver65, inIndia, isRor, art20, inp});
+    const mrTrue = ((yb.us + yb.india) - (y.us + y.india)) / 5000;
+
+    lifeFedTax   += y.us/infFac;
+    lifeIndiaTax += y.india/infFac;
+    lifeIrmaa    += y.irmaa/infFac;
+    lifeSpend    += need/infFac;
+
+    const preSettle = pre, rothSettle = roth, taxSettle = tax;
+    // grow
+    pre*= (1+r); roth*=(1+r); tax*=(1+r);
+
+    rows.push({
+      age:a, infFac,
+      ssTaxable: y.ssTaxable/infFac,
+      rmd: Math.min(rmd, wPre)/infFac,
+      otherW: Math.max(0, wPre - rmd)/infFac,
+      ltcg: ltcg/infFac,
+      totalTaxableUS: y.magi/infFac,
+      fed: y.us/infFac, india: y.india/infFac, irmaa: y.irmaa/infFac,
+      irmaaTier: y.tier, mr: mrTrue,
+      preOpen: pre0/infFac,
+      _need:need, _ss:ssGross, _wPre:wPre, _wTax:wTax, _wRoth:wRoth,
+      _conv:converted, _tax:y.total, _convTax:convTax, _surplus:surplus,
+      _pre0:pre0, _roth0:roth0, _tax0:tax0,
+      _preS:preSettle, _rothS:rothSettle, _taxS:taxSettle,
+      _preEnd:pre, _rothEnd:roth, _taxEnd:tax, _lump:lumpNow,
+      pre: pre/infFac, roth: roth/infFac, taxB: tax/infFac,
+      inIndia, isRnor, isRor
+    });
+  }
+
+  const last = rows[rows.length-1];
+  return {
+    rows,
+    lifeFedTax, lifeIndiaTax, lifeIrmaa,
+    lifeTax: lifeFedTax + lifeIndiaTax + lifeIrmaa,
+    endTotal: last.pre + last.roth + last.taxB,
+    endPre: last.pre, endRoth: last.roth, endTax: last.taxB,
+    rmdAge: rAge
+  };
+}
+
+/* ---------------- render ---------------- */
+function readInputs(){
+  const plan = document.querySelector("#segPlan button[aria-pressed=true]").dataset.plan;
+  return {
+    age:N("age"), retAge:Math.max(N("retAge"), N("age")+1), filing:$("filing").value,
+    birthYear:N("birthYear"),
+    bPre:N("bPre"), bRoth:N("bRoth"), bTax:N("bTax"), basis:Math.min(N("basis"), N("bTax")),
+    cPre:N("cPre"), cMatch:N("cMatch"), cTax:N("cTax"),
+    ret:N("ret")/100, infl:N("infl")/100, spend:N("spend"), ss:N("ss"), ssAge:N("ssAge"),
+    stateRate:N("stateRate")/100, mrNow:N("mrNow")/100,
+    plan, moveAge:N("moveAge"), rnorYears:parseInt($("rnor").value,10),
+    usStatus:$("usStatus").value, order:$("order").value,
+    spendIndia:N("spendIndia")||N("spend"), rnorFill:parseInt($("rnorFill").value,10),
+    periodic:$("periodic").value==="1", rothTaxedInIndia:$("rothIndia").value==="1",
+    fx:N("fx")||88
+  };
+}
+
+function render(){
+  const inp = readInputs();
+  document.querySelectorAll(".row.nri").forEach(el=>el.style.display = inp.plan==="india" ? "" : "none");
+
+  const base = simulate(inp,"pre");
+  const roth = simulate(inp,"roth");
+  const brok = simulate(inp,"brokerage");
+  const rAge = base.rmdAge;
+
+  /* ---- verdict ---- */
+  const rmdRow = base.rows.find(r=>r.age===rAge) || base.rows[base.rows.length-1];
+  const preAtRmd = rmdRow ? rmdRow.preOpen : 0;
+  const firstRmd = rmdRow ? rmdRow.rmd : 0;
+  const tbl = BR26[inp.filing];
+  const std = STD26[inp.filing] + (inp.filing==="mfj"?STD65.mfj*2:STD65.single);
+  const mr = rmdRow.mr;
+
+  $("vBal").textContent = usdK(preAtRmd);
+  $("vBalSub").textContent = "at age " + rAge + ", today's dollars";
+  $("vRmd").textContent = usdK(firstRmd);
+  $("vRmdSub").textContent = "year one, before any spending choice";
+  const inIndiaAtRmd = rmdRow.inIndia;
+  const reliefBand = mr > 1.0;
+  $("vBracket").textContent = Math.round(mr*100) + "%";
+  const tierNames = ["no surcharge","tier 1","tier 2","tier 3","tier 4","tier 5"];
+  $("vBracketSub").textContent = reliefBand ? "inside India's marginal relief band"
+      : (inIndiaAtRmd ? "combined US and India, at " + rAge
+      : "US marginal · IRMAA " + tierNames[rmdRow.irmaaTier]);
+
+  const where = inIndiaAtRmd ? "between the two tax systems" : "in the " + Math.round(mr*100) + "% bracket";
+  const deductedAt = Math.round(inp.mrNow*100);
+  const tag = $("vTag"), txt = $("vText");
+  tag.className = "tag";
+  if (reliefBand){
+    tag.classList.add("t-past"); tag.textContent = "Inside a marginal relief band";
+    txt.innerHTML = "At " + rAge + " your Indian income sits just above a surcharge threshold. " +
+      "Marginal relief caps the extra tax at the extra income, and 4% cess is charged on top of " +
+      "that capped figure — so the next dollar costs " + Math.round(mr*100) + "%. " +
+      "This is real, and it is narrow: a small change in withdrawals moves you out of it. " +
+      "Worth modelling your withdrawal size deliberately rather than by accident.";
+  } else if (mr >= 0.24){
+    tag.classList.add("t-past"); tag.textContent = "Past the sweet spot";
+    txt.innerHTML = "One more dollar out of your pre-tax account at " + rAge + " costs " +
+      Math.round(mr*100) + "%" + (inIndiaAtRmd ? ", counting both countries" : "") +
+      ". You are deducting at " + deductedAt + "% today to repay at " + Math.round(mr*100) +
+      "% later. That is not deferral, it is a rate increase you are volunteering for.";
+  } else if (mr >= 0.22){
+    tag.classList.add("t-at"); tag.textContent = "At the edge";
+    txt.innerHTML = "Forced withdrawals land you " + where + " at " + rAge +
+      ", against the " + deductedAt + "% you deduct at today. The deduction is barely paying for itself. " +
+      "Check the redirect numbers before you renew next year's contribution.";
+  } else {
+    tag.classList.add("t-below"); tag.textContent = "Below the sweet spot";
+    txt.innerHTML = "Your forced withdrawals still cost only " + Math.round(mr*100) +
+      "% at " + rAge + ", well under the " + deductedAt + "% you are deducting at today. " +
+      "Pre-tax contributions are still doing their job. Re-run this every couple of years — the balance compounds faster than the brackets widen.";
+  }
+
+  drawChart(base.rows, inp, rAge, std);
+  drawCards([
+    {key:"pre",  name:"Keep going pre-tax", sub:"The autopilot answer. Deduct now, sort it out later.", s:base},
+    {key:"roth", name:"Redirect to Roth 401(k)", sub:"Same gross deferral, tax paid from cash flow. No future RMD.", s:roth},
+    {key:"brok", name:"Redirect to brokerage", sub:"After-tax dollars, but no lockup, no RMD, no age rule.", s:brok}
+  ], base, inp.plan==="india");
+  drawLedger(inp, base, rAge, preAtRmd);
+  drawChecks(inp, rAge, mr);
+}
+
+/* ---- chart ---- */
+function drawChart(rows, inp, rAge, std){
+  const W=900,H=380,ml=64,mr=18,mt=18,mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb;
+  const ages = rows.map(r=>r.age);
+  const maxV = Math.max(...rows.map(r=>r.ssTaxable+r.rmd+r.otherW+r.ltcg), 60000)*1.12;
+  const x = a => ml + (a-ages[0])/(ages[ages.length-1]-ages[0]) * iw;
+  const y = v => mt + ih - (v/maxV)*ih;
+  const bw = Math.max(3, iw/rows.length - 1.6);
+  let s = "";
+
+  // bracket threshold lines (today's dollars, so std deduction added back)
+  const tbl = BR26[inp.filing];
+  tbl.forEach(([cap,rate])=>{
+    if (cap===Infinity) return;
+    const v = cap + std;
+    if (v > maxV) return;
+    s += `<line x1="${ml}" y1="${y(v).toFixed(1)}" x2="${W-mr}" y2="${y(v).toFixed(1)}" stroke="#162136" stroke-width="1" stroke-dasharray="2 4" opacity=".38"/>`;
+    s += `<text x="${W-mr-2}" y="${(y(v)-4).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#7C8190">${Math.round(rate*100)}% starts</text>`;
+  });
+
+  rows.forEach(r=>{
+    const cx = x(r.age)-bw/2;
+    let acc = 0;
+    const seg = (v,fill)=>{ if(v<=0) return; const h=(v/maxV)*ih; acc+=v;
+      s += `<rect x="${cx.toFixed(1)}" y="${(y(acc)).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${fill}"/>`; };
+    seg(r.ssTaxable,"#6E93BC");
+    seg(r.rmd,"#B0392C");
+    seg(r.otherW + r.ltcg,"#DED8C9");
+  });
+
+  // RMD start marker
+  if (rAge >= rows[0].age && rAge <= rows[rows.length-1].age){
+    const px = x(rAge);
+    s += `<line x1="${px}" y1="${mt}" x2="${px}" y2="${mt+ih}" stroke="#B0392C" stroke-width="1.5"/>`;
+    s += `<text x="${px+5}" y="${mt+11}" font-family="IBM Plex Mono" font-size="10" font-weight="600" fill="#B0392C">RMDs begin, age ${rAge}</text>`;
+  }
+  // India move marker
+  if (inp.plan==="india"){
+    const ma = Math.max(inp.moveAge, inp.retAge);
+    if (ma>=rows[0].age && ma<=rows[rows.length-1].age){
+      const px=x(ma);
+      s += `<line x1="${px}" y1="${mt}" x2="${px}" y2="${mt+ih}" stroke="#A8762A" stroke-width="1.5" stroke-dasharray="5 3"/>`;
+      s += `<text x="${px+5}" y="${mt+26}" font-family="IBM Plex Mono" font-size="10" font-weight="600" fill="#A8762A">move to India</text>`;
+    }
+  }
+
+  // axes
+  s += `<line x1="${ml}" y1="${mt+ih}" x2="${W-mr}" y2="${mt+ih}" stroke="#162136" stroke-width="1.5"/>`;
+  for (let a=Math.ceil(ages[0]/5)*5; a<=ages[ages.length-1]; a+=5){
+    s += `<text x="${x(a)}" y="${mt+ih+18}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10.5" fill="#7C8190">${a}</text>`;
+  }
+  for (let i=0;i<=4;i++){
+    const v = maxV*i/4;
+    s += `<text x="${ml-8}" y="${y(v)+3.5}" text-anchor="end" font-family="IBM Plex Mono" font-size="10.5" fill="#7C8190">${usdK(v)}</text>`;
+  }
+  s += `<text x="${ml-8}" y="${mt-4}" text-anchor="end" font-family="IBM Plex Mono" font-size="9.5" fill="#7C8190">US taxable income</text>`;
+  $("chart").innerHTML = s;
+}
+
+/* ---- scenario cards ---- */
+function drawCards(list, base, inIndia){
+  const best = list.reduce((a,b)=> b.s.endTotal > a.s.endTotal ? b : a);
+  $("cards").innerHTML = list.map(o=>{
+    const d = o.s.endTotal - base.endTotal;
+    const isBest = o===best;
+    const split = inIndia
+      ? `<div class="metric"><span>Paid to US / India</span><b>${usdK(o.s.lifeFedTax)} / ${usdK(o.s.lifeIndiaTax)}</b></div>`
+      : `<div class="metric"><span>Of which IRMAA</span><b>${usdK(o.s.lifeIrmaa)}</b></div>`;
+    return `<div class="card${isBest?" best":""}">
+      ${isBest?'<span class="flag">MOST LEFT AT 95</span>':''}
+      <h3>${o.name}</h3>
+      <div class="sub">${o.sub}</div>
+      <div class="metric"><span>Lifetime tax to 95</span><b>${usdK(o.s.lifeTax)}</b></div>
+      ${split}
+      <div class="metric"><span>Pre-tax left at 95</span><b>${usdK(o.s.endPre)}</b></div>
+      <div class="metric"><span>Tax-free left at 95</span><b>${usdK(o.s.endRoth)}</b></div>
+      <div class="metric"><span>Estate at 95</span><b>${usdK(o.s.endTotal)}</b></div>
+      <div class="delta ${d>0?'pos':(d<0?'neg':'')}">${o.key==="pre" ? "baseline"
+        : (d>0? "+ "+usdK(d)+" to your heirs" : "− "+usdK(-d)+" to your heirs")}</div>
+    </div>`;
+  }).join("");
+}
+
+/* ---- ledger spread ---- */
+function drawLedger(inp, base, rAge, preAtRmd){
+  const inIndia = inp.plan==="india";
+  const rothTaxed = inp.rothTaxedInIndia;
+  const per = inp.periodic;
+  const kept = inp.usStatus === "keep";
+
+  const rows = [
+    {
+      k:"Traditional 401(k) growth",
+      us:{v:"Deferred", d:"No tax until you withdraw. Standard treatment."},
+      in:{v: inIndia ? "Deferred via 89A" : "Not applicable",
+          d: inIndia ? "Only if you file Form 10EE in your first ROR year. Miss it and India can tax the annual accrual while the US taxes nothing yet." : "You are not an Indian tax resident."},
+      mark: inIndia ? "warn" : "ok",
+      sym: inIndia ? "!" : "="
+    },
+    {
+      k:"401(k) withdrawal",
+      us:{v: !inIndia ? "Ordinary income" : (per && kept ? "Still taxed" : (per ? "Not taxed" : "Taxed in full")),
+          d: !inIndia ? "Taxed at your marginal rate, plus state if applicable."
+             : (per && kept ? "Article 20 would exempt a periodic pension — but the treaty saving clause lets the US keep taxing its own citizens and green card holders wherever they live. Holding the card holds the tax."
+             : (per ? "As a US non-resident, Article 20 assigns periodic private pension to your country of residence. File W-8BEN citing the article or they withhold 30% anyway."
+             : "A lump sum is not a periodic payment. It falls out of Article 20 into ‘other income’, taxable in both countries."))},
+      in:{v: inIndia ? "Slab rates" : "Not applicable",
+          d: inIndia ? (per ? "Taxed once you are ROR, with credit for US tax paid. During RNOR neither side taxes it — that window is the whole game."
+             : "The entire balance lands in one Indian tax year, at 30% plus surcharge. There is no way to spread it afterwards.")
+             : "—"},
+      mark: inIndia ? (per ? (kept ? "warn" : "ok") : "bad") : "ok",
+      sym: inIndia ? (per ? (kept ? "!" : "=") : "✕") : "="
+    },
+    {
+      k:"Roth withdrawal after 59½",
+      us:{v:"Tax-free", d:"Qualified distribution. Zero on your 1040, invisible to IRMAA and to Social Security taxation."},
+      in:{v: inIndia ? (rothTaxed ? "Possibly taxed" : "Assumed exempt") : "Not applicable",
+          d: inIndia ? (rothTaxed ? "Section 89A aligns the timing of Indian tax, not the exemption. Indian law does not recognise Roth status, and there is no US tax to credit against. Unresolved."
+             : "You are modelling the optimistic reading. Nothing in Indian statute currently guarantees it.")
+             : "—"},
+      mark: inIndia ? (rothTaxed ? "bad" : "warn") : "ok",
+      sym: inIndia ? (rothTaxed ? "✕" : "?") : "="
+    },
+    {
+      k:"Required minimum distributions",
+      us:{v:"Begin at "+rAge, d:"Forced out whether you need the money or not. Living abroad changes nothing."},
+      in:{v: inIndia ? "Taxable as income" : "Not applicable",
+          d: inIndia ? "India does not care that the withdrawal was involuntary. Once ROR, it is slab-rate income like any other." : "—"},
+      mark: "warn", sym:"!"
+    },
+    {
+      k:"Social Security",
+      us:{v:"Up to 85% taxable", d:"Provisional income test. Large RMDs are what push the taxable share to the ceiling."},
+      in:{v: inIndia ? "Taxable in US only" : "Not applicable",
+          d: inIndia ? "US social security is carved out of Article 20 and stays taxable in the source country." : "—"},
+      mark:"ok", sym:"="
+    },
+    {
+      k:"The account itself",
+      us:{v:"No reporting", d:"It is a domestic account. Nothing special to file."},
+      in:{v: inIndia ? "Schedule FA, annually" : "Not applicable",
+          d: inIndia ? "Every foreign asset, disclosed every year once you are ROR, even with zero withdrawals. The Black Money Act penalty for omission starts at ₹10 lakh." : "—"},
+      mark: inIndia ? "bad" : "ok", sym: inIndia ? "✕" : "="
+    }
+  ];
+
+  $("usRows").innerHTML = rows.map(r=>
+    `<div class="lrow"><div class="lk">${r.k}</div><div class="lv" style="color:var(--us)">${r.us.v}</div><div class="ld">${r.us.d}</div></div>`).join("");
+  $("inRows").innerHTML = rows.map(r=>
+    `<div class="lrow"><div class="lk">${r.k}</div><div class="lv" style="color:var(--india)"><span class="m-mark ${r.mark}">${r.sym}</span>${r.in.v}</div><div class="ld">${r.in.d}</div></div>`).join("");
+  $("gutRows").innerHTML = rows.map(r=>
+    `<div class="gcell"><span class="mark ${r.mark}">${r.sym}</span></div>`).join("");
+
+  // equalise row heights across the three columns
+  requestAnimationFrame(()=>{
+    const u=[...$("usRows").children], i=[...$("inRows").children], g=[...$("gutRows").children];
+    u.forEach((el,k)=>{
+      el.style.height=""; i[k].style.height=""; g[k].style.height="";
+      const h = Math.max(el.offsetHeight, i[k].offsetHeight);
+      if (window.innerWidth > 760){ el.style.height=h+"px"; i[k].style.height=h+"px"; g[k].style.height=h+"px"; }
+    });
+  });
+}
+
+/* ---- action checklist ---- */
+function drawChecks(inp, rAge, mr){
+  const items = [];
+  if (mr >= 0.22){
+    items.push({t:"Check whether your plan offers a Roth 401(k)",
+      p:"Same contribution limit, same match, no future RMD on your own contributions. The match still lands pre-tax, which is fine. This is a login, not a decision.",
+      w:"This week"});
+  }
+  items.push({t:"Fill brackets deliberately between retirement and age "+rAge,
+    p:"Salary gone, Social Security not yet claimed, RMDs not yet forced. This is the lowest-income stretch of your life and the only window where conversions are cheap. It closes on a fixed date.",
+    w:"Age "+inp.retAge+" to "+rAge});
+  if (inp.plan==="india"){
+    items.push({t:"Set up a systematic withdrawal plan before you leave the US",
+      p:"Even $1,000 a month establishes the distribution as periodic, which is what DTAA Article 20 requires. A single lump sum later has no treaty protection. File W-8BEN with the plan administrator citing Article 20, or they withhold 30% by default.",
+      w:"Before departure"});
+    items.push({t:"Time your arrival to the Indian financial year",
+      p:"The Indian tax year runs April to March. Landing in early April rather than late March can buy a full extra year of RNOR, during which foreign income is not taxed in India at all.",
+      w:"Before departure"});
+    items.push({t:"Convert aggressively during RNOR",
+      p:"For "+inp.rnorYears+" year"+(inp.rnorYears===1?"":"s")+" after you return, India does not tax foreign income. Conversions and withdrawals in that window face US tax only — often at a low rate, since you have no salary. It never comes back.",
+      w:"Age "+Math.max(inp.moveAge,inp.retAge)+" to "+(Math.max(inp.moveAge,inp.retAge)+inp.rnorYears)});
+    items.push({t:"File Form 10EE in your first ROR year",
+      p:"One-time, irrevocable. It defers Indian tax on the annual growth inside your 401(k) and IRA to the year you actually withdraw. ITAT Mumbai confirmed in 2025 that it does not need re-filing. Missing it means India taxes accruals the US has not taxed yet, with no credit to claim.",
+      w:"First ROR year"});
+    items.push({t:"Get a written opinion on your Roth before you rely on it",
+      p:"This is the one thing on this list nobody can answer from a blog post. If a large share of your wealth is Roth and you intend to become an Indian tax resident, the exposure is real and unsettled. Ask a cross-border CA to put a position in writing.",
+      w:"Before you commit"});
+  } else {
+    items.push({t:"Watch the two-year IRMAA lag",
+      p:"Medicare premiums are set from your return two years earlier. A conversion at 71 shows up in your premium at 73. Plan the surcharge as part of the conversion cost, not as a surprise.",
+      w:"From age 63"});
+    items.push({t:"Keep the brokerage account funded",
+      p:"It is the only bucket with no age rule, no penalty, and no forced withdrawal. It is what lets you pay conversion tax without inflating the income you are trying to keep low.",
+      w:"Ongoing"});
+  }
+  $("checks").innerHTML = items.map(o=>
+    `<li><div><h4>${o.t}</h4><p>${o.p}</p><div class="when">${o.w}</div></div></li>`).join("");
+}
+
+/* ---------------- wiring ---------------- */
+document.querySelectorAll("#segPlan button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#segPlan button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true"); render();
+  });
+});
+document.querySelectorAll("input,select").forEach(el=>{
+  el.addEventListener("input", render); el.addEventListener("change", render);
+});
+window.addEventListener("resize", ()=>render());
+render();
+</script>
+</body>
+</html>
