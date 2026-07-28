@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Is Your 401(k) Becoming a Tax Trap? — rupeestories</title>
-<style> 
+<title>Is Your 401(k) Becoming a Tax Trap? | rupeestories</title>
+<style>
 :root{
   /* sampled from the NRI Retirement Path Optimizer */
   --navy:#162136;
@@ -83,7 +83,7 @@ section{padding:44px 0 0}
 }
 .sec-head h2{
   font-family:var(--display);font-weight:900;font-size:clamp(21px,3vw,28px);
-  letter-spacing:-.01em;margin:0;flex:1;color:var(--white);
+  letter-spacing:-.01em;margin:0;flex:1;color:var(--navy);
 }
 .sec-note{font-size:13.5px;color:var(--muted);max-width:40ch}
 
@@ -404,25 +404,260 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   a{color:#000;text-decoration:none}
 }
 
+
+/* ==========================================================
+   FINAL SINGLE-PAGE DASHBOARD LAYOUT
+   Uses the full browser width. All inputs and results remain
+   on one continuous page, with no tabbed or multi-page flow.
+   ========================================================== */
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+.wrap{width:min(100%,1840px);max-width:none;margin:0 auto;padding:0 18px 64px}
+.hero-in{width:min(100%,1840px);max-width:none;margin:0 auto;padding:0 18px}
+.hero{padding:16px 0 24px}
+.hero h1{font-size:clamp(30px,4vw,48px);margin:16px auto 9px;max-width:30ch}
+.hero p.dek{font-size:15.5px;max-width:82ch;margin:0 auto 15px}
+.pill{padding:6px 14px;font-size:12.5px}
+.toolbar{position:sticky;top:0;z-index:40;margin:0 -18px;padding:10px 18px;background:rgba(245,242,233,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(22,33,54,.06)}
+.toolbar button{padding:8px 15px;font-size:12.5px}
+section{padding:24px 0 0;min-width:0}
+.sec-head{gap:10px;margin-bottom:11px;align-items:center}
+.sec-head h2{font-size:clamp(20px,2vw,27px)}
+.sec-note{max-width:54ch;font-size:12.5px;margin-left:auto}
+.input-section .sec-head h2{color:var(--navy)!important}
+.input-section .sec-note{color:var(--ink-soft)}
+.input-tools{display:none!important}
+.panel{padding:10px 16px 16px;border-left-width:5px}
+.grp-label{padding:13px 0 6px;margin-top:2px}
+.rows{grid-template-columns:repeat(4,minmax(245px,1fr));gap:8px 12px;padding-top:8px}
+.row{min-height:58px;padding:8px 10px;border:1px solid var(--line-soft);border-radius:9px;background:#FBFAF6}
+.row label{font-size:13px;line-height:1.32}
+.row .hint{font-size:10.5px;margin-top:2px}
+.row input[type=number],.row select{width:126px;max-width:48%;font-size:12.5px;padding:6px 8px;background:#fff}
+.row select{width:168px}
+.seg button{padding:7px 11px;font-size:12px}
+.input-warning{margin:5px 0 2px}
+
+.answer-card{border-radius:13px}
+.answer-grid{grid-template-columns:minmax(285px,.8fr) minmax(500px,1.6fr)}
+.answer-main{padding:21px 23px}
+.answer-main .winner{font-size:clamp(27px,3vw,41px)}
+.astat{padding:19px 18px}
+.answer-detail-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.65fr);gap:14px;align-items:stretch;margin-top:14px}
+.answer-detail-grid .chartbox,.answer-detail-grid .why-card{margin-top:0;height:100%}
+.why-card{padding:18px 20px}
+.why-card h3{font-size:17px}
+.why-card li{font-size:13px;margin:5px 0}
+
+.forced-detail-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(520px,.85fr);gap:14px;align-items:stretch;margin-top:14px}
+.forced-detail-grid .chartbox{margin-top:0}
+.rmd-table{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between}
+.rmd-table table.data{min-width:0;font-size:12px}
+.rmd-table table.data th,.rmd-table table.data td{padding:9px 8px}
+.verdict{margin-top:0}
+.vbadge{padding:17px 20px;min-width:175px}
+.vbadge .v{font-size:31px}
+.vstate{padding:17px 20px}
+.chartbox{padding:12px 10px 7px;border-radius:12px}
+.legend{gap:12px;padding:8px 10px 2px;font-size:11px}
+
+.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{padding:18px 18px 20px}
+.card h3{font-size:17px;padding-right:92px}
+.card .sub{font-size:11.5px;min-height:30px}
+.metric{padding:6px 0;font-size:12px}
+.metric b{font-size:13px}
+.delta{font-size:11.5px;margin-top:10px}
+
+.detail-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.detail-grid>section{min-width:0}
+.lower-detail-grid{grid-template-columns:minmax(0,1.2fr) minmax(420px,.8fr)}
+.sens-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px}
+.sens-cell{padding:10px}
+.spread{grid-template-columns:1fr 46px 1fr}
+.lrow{padding:12px 14px;min-height:68px}
+.lrow .lv{font-size:15px}
+.lrow .ld{font-size:11.5px}
+ol.checks{padding:4px 18px}
+ol.checks li{grid-template-columns:34px 1fr;gap:9px;padding:12px 0}
+ol.checks h4{font-size:14.5px}
+ol.checks p{font-size:12px;line-height:1.45}
+
+.table-card{overflow:auto}
+table.data{min-width:0;font-size:12px}
+table.data th,table.data td{padding:9px 10px}
+.audit{background:var(--card);border-radius:14px;border-left:4px solid var(--accent);box-shadow:0 1px 2px rgba(22,33,54,.06),0 10px 28px rgba(22,33,54,.055);overflow:visible}
+.audit-title{padding:14px 18px;font-weight:900;color:var(--navy);border-bottom:1px solid var(--line)}
+.audit-scroll{max-height:none;overflow:visible}
+.audit table.data{width:100%;min-width:900px}
+footer{margin-top:28px;padding:18px 20px}
+
+@media (min-width:1550px){
+  .rows{grid-template-columns:repeat(5,minmax(230px,1fr))}
+}
+@media (max-width:1350px){
+  .rows{grid-template-columns:repeat(3,minmax(240px,1fr))}
+  .answer-detail-grid,.forced-detail-grid{grid-template-columns:1fr}
+  .lower-detail-grid{grid-template-columns:1fr}
+}
+@media (max-width:1050px){
+  .rows{grid-template-columns:repeat(2,minmax(230px,1fr))}
+  .detail-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}
+  .card .sub{min-height:0}
+  .answer-grid{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  .wrap,.hero-in{padding-left:11px;padding-right:11px}
+  .toolbar{margin-left:-11px;margin-right:-11px;padding-left:11px;padding-right:11px;position:static}
+  .rows{grid-template-columns:1fr}
+  .row{min-height:54px}
+  .sec-note{width:100%;margin-left:0}
+  .answer-stats{grid-template-columns:1fr}
+  .sens-grid{grid-template-columns:1fr}
+  .audit-scroll,.table-card{overflow-x:auto}
+}
+
+@media print{
+  .detail-grid,.answer-detail-grid,.forced-detail-grid{display:block}
+  .audit-scroll{overflow:visible}
+  .audit table.data{min-width:0;font-size:7.5pt}
+}
+
+
+/* ==========================================================
+   SPLIT-SCREEN RETIREMENT DASHBOARD
+   Inputs remain on the left. Results start at the same height
+   on the right and continue down one normal scrolling page.
+   ========================================================== */
+body{background:var(--cream);overflow-x:hidden}
+.wrap{width:min(100%,1800px);max-width:none;margin:0 auto;padding:0 18px 64px}
+.hero-in{width:min(100%,1800px);max-width:none;padding:0 18px}
+.hero{padding:10px 0 14px}
+.hero-top{min-height:20px}
+.hero h1{font-size:clamp(28px,3.2vw,43px);margin:7px auto 5px;max-width:31ch}
+.hero p.dek{font-size:14px;line-height:1.4;margin:0 auto 9px;max-width:90ch}
+.pills{gap:8px}
+.pill{padding:4px 11px;font-size:11.5px}
+.toolbar{position:sticky;top:0;z-index:50;margin:0 -18px;padding:9px 18px;background:rgba(245,242,233,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(22,33,54,.06)}
+
+.dashboard-shell{
+  display:grid;
+  grid-template-columns:minmax(520px,.88fr) minmax(0,1.42fr);
+  gap:20px;
+  align-items:start;
+  padding-top:18px;
+}
+.input-column,.results-column{min-width:0}
+.input-column{
+  background:linear-gradient(155deg,var(--navy-deep),var(--navy));
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 12px 34px rgba(14,23,39,.15);
+}
+.input-column .input-section{padding:0}
+.input-column .sec-head{margin:0 2px 12px;align-items:flex-start}
+.input-column .sec-num{color:var(--gold)}
+.input-column .sec-head h2{color:#F5F2E9!important;font-size:clamp(21px,1.65vw,27px)}
+.input-column .sec-note{color:#BFC9D8;max-width:32ch;font-size:12px;margin-left:auto;text-align:right}
+.input-column .panel{padding:9px 12px 14px;border-left:none;border-radius:13px;box-shadow:none}
+.input-column .grp-label{padding:12px 2px 6px;font-size:10.5px}
+.input-column .rows{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding-top:7px}
+.input-column .row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(108px,42%);
+  align-items:center;
+  min-height:54px;
+  gap:8px;
+  padding:7px 8px;
+  border:1px solid var(--line-soft);
+  border-radius:8px;
+  background:#FBFAF6;
+}
+.input-column .row label{font-size:12px;line-height:1.25;min-width:0}
+.input-column .row .hint{font-size:9.5px;line-height:1.2;margin-top:2px}
+.input-column .row input[type=number],.input-column .row select{
+  width:100%;max-width:none;min-width:0;font-size:11.5px;padding:6px 7px;text-align:right;background:#fff
+}
+.input-column .row select{text-align:left}
+.input-column .seg{width:100%;display:grid;grid-template-columns:1fr 1fr}
+.input-column .seg button{padding:7px 4px;font-size:10.5px;white-space:nowrap}
+.input-column .input-warning{font-size:11.5px}
+
+.results-column>section:first-child{padding-top:0}
+.results-column section{padding-top:20px}
+.results-column .sec-head{margin-bottom:10px}
+.results-column .sec-head h2{font-size:clamp(20px,1.7vw,27px)}
+.results-column .sec-note{font-size:12px;max-width:48ch}
+.results-column .answer-grid{grid-template-columns:minmax(270px,.82fr) minmax(450px,1.5fr)}
+.results-column .answer-main{padding:22px}
+.results-column .answer-main .winner{font-size:clamp(29px,2.7vw,43px)}
+.results-column .astat{padding:18px 15px}
+.results-column .astat .v{font-size:clamp(21px,2vw,31px)}
+.results-column .answer-detail-grid{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:12px}
+.results-column .forced-detail-grid{grid-template-columns:minmax(0,1.35fr) minmax(410px,.75fr);gap:12px}
+.results-column .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.results-column .card{padding:16px}
+.results-column .card h3{font-size:16px;padding-right:82px}
+.results-column .detail-grid{gap:14px}
+.results-column .lower-detail-grid{grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr)}
+.results-column .audit-scroll{overflow-x:auto}
+.results-column .audit table.data{min-width:850px}
+
+@media (min-width:1650px){
+  .dashboard-shell{grid-template-columns:minmax(600px,.95fr) minmax(0,1.55fr);gap:24px}
+  .input-column .rows{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1380px){
+  .dashboard-shell{grid-template-columns:minmax(430px,.78fr) minmax(0,1.22fr)}
+  .input-column .rows{grid-template-columns:1fr}
+  .results-column .answer-grid{grid-template-columns:1fr}
+  .results-column .answer-stats{grid-template-columns:repeat(3,1fr)}
+  .results-column .answer-detail-grid,.results-column .forced-detail-grid{grid-template-columns:1fr}
+  .results-column .cards{grid-template-columns:1fr}
+  .results-column .card .sub{min-height:0}
+  .results-column .lower-detail-grid{grid-template-columns:1fr}
+}
+@media (max-width:1020px){
+  .dashboard-shell{grid-template-columns:1fr;gap:18px}
+  .input-column .rows{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .input-column .sec-note{text-align:left;margin-left:0;max-width:none;width:100%}
+  .results-column .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .wrap,.hero-in{padding-left:10px;padding-right:10px}
+  .toolbar{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px;position:static}
+  .dashboard-shell{padding-top:10px}
+  .input-column{padding:11px;border-radius:14px}
+  .input-column .rows{grid-template-columns:1fr}
+  .input-column .row{grid-template-columns:minmax(0,1fr) minmax(108px,42%)}
+  .results-column .answer-stats{grid-template-columns:1fr}
+  .results-column .cards{grid-template-columns:1fr}
+  .results-column .detail-grid{grid-template-columns:1fr}
+}
+@media print{
+  .dashboard-shell{display:block}
+  .input-column{background:#fff!important;padding:0;box-shadow:none}
+  .input-column .sec-head h2{color:var(--navy)!important}
+  .input-column .sec-note{color:#555}
+  .input-column .rows{grid-template-columns:repeat(3,1fr)}
+}
+
+.full-width-results{padding-top:4px}
+.full-width-results+ .detail-grid{padding-top:0}
+@media print{.full-width-results{display:block}}
+
 </style>
 </head>
 <body>
-<header class="hero">
 <header class="hero">
   <div class="hero-in">
     <div class="hero-top">
       <a href="https://reddit.com/r/rupeestories">r/rupeestories</a>
       <a href="https://rupeestories.substack.com">rupeestories.substack.com</a>
     </div>
-
     <h1>Is Your 401(k) Becoming a <em>Tax Trap?</em></h1>
-
-    <p class="dek">
-     Your 401(k) balance is not the same as spendable money.
-     Compare pre-tax, Roth and brokerage contributions to see what remains
-     after future taxes, RMDs and retirement withdrawals.
-    </p>
-
+    <p class="dek">Compare pre-tax, Roth and brokerage contributions to see what remains after future taxes, required withdrawals and your retirement location.</p>
     <div class="pills">
       <span class="pill">No login</span>
       <span class="pill">No data collected</span>
@@ -446,12 +681,15 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   <span class="tb-msg" id="tbMsg" role="status" aria-live="polite"></span>
 </div>
 
+<main class="dashboard-shell">
+<aside class="input-column">
+
 <!-- ============ INPUTS ============ -->
-<section>
+<section class="input-section">
   <div class="sec-head">
-    <span class="sec-num">INPUT</span>
-    <h2>Your position today</h2>
-    <span class="sec-note">Your financial inputs stay on this device. Shared links contain the assumptions you choose to share.</span>
+    <span class="sec-num">INPUTS</span>
+    <h2>Enter your retirement details</h2>
+    <span class="sec-note">All assumptions are shown on one page. Your financial inputs stay on this device.</span>
   </div>
 
   <div class="panel">
@@ -519,6 +757,9 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   </div>
 </section>
 
+</aside>
+<div class="results-column">
+
 <!-- ============ RESULTS ============ -->
 <section id="answerSection">
   <div class="sec-head"><span class="sec-num">01</span><h2>Your answer</h2><span class="sec-note">The winner uses spending delivered plus estimated after-tax value. Raw account totals do not decide the answer.</span></div>
@@ -532,15 +773,19 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
       </div>
     </div>
   </div>
-  <div class="chartbox"><svg class="chart" id="breakChart" viewBox="0 0 900 330" role="img" aria-label="Projected outcome advantage of Roth and brokerage compared with pre-tax by age"></svg><div class="legend"><span><i style="background:#2E7D5B"></i>Roth projected advantage</span><span><i style="background:#0F4C81"></i>Brokerage projected advantage</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Break-even line</span></div></div>
-  <div class="why-card" id="whyBox"><h3>Why this result</h3><ul id="whyList"></ul></div>
+  <div class="answer-detail-grid">
+    <div class="chartbox"><svg class="chart" id="breakChart" viewBox="0 0 900 330" role="img" aria-label="Projected outcome advantage of Roth and brokerage compared with pre-tax by age"></svg><div class="legend"><span><i style="background:#2E7D5B"></i>Roth projected advantage</span><span><i style="background:#0F4C81"></i>Brokerage projected advantage</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Break-even line</span></div></div>
+    <div class="why-card" id="whyBox"><h3>Why this result</h3><ul id="whyList"></ul></div>
+  </div>
 </section>
 
 <section>
   <div class="sec-head"><span class="sec-num">02</span><h2>The forced withdrawal</h2><span class="sec-note">What the IRS makes the household take from pre-tax accounts.</span></div>
   <div class="verdict"><div class="verdict-top"><div class="vbadge"><div class="k">Pre-tax at first modelled RMD</div><div class="v num" id="vBal">-</div><div class="s" id="vBalSub">-</div></div><div class="vbadge"><div class="k">First modelled forced withdrawal</div><div class="v num" id="vRmd">-</div><div class="s" id="vRmdSub">-</div></div><div class="vbadge"><div class="k">Marginal rate</div><div class="v num" id="vBracket">-</div><div class="s" id="vBracketSub">-</div></div><div class="vstate"><div class="tag" id="vTag">-</div><p id="vText">-</p></div></div></div>
-  <div class="chartbox"><svg class="chart" id="chart" viewBox="0 0 900 380" role="img" aria-label="Projected taxable income by age against tax bracket thresholds"></svg><div class="legend"><span><i style="background:#6E93BC"></i>Taxable Social Security</span><span><i style="background:#B0392C"></i>Forced RMD</span><span><i style="background:#DED8C9"></i>Other withdrawals</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Bracket thresholds</span></div></div>
-  <div class="table-card"><table class="data"><thead><tr><th>Your age</th><th>Pre-tax opening</th><th>Forced RMD</th><th>Taxable Social Security</th><th>Marginal rate</th><th>IRMAA due</th></tr></thead><tbody id="rmdCheckRows"></tbody></table><div class="table-note">IRMAA uses the modelled MAGI from two years earlier. Current MAGI supplies the pre-retirement lookback years.</div></div>
+  <div class="forced-detail-grid">
+    <div class="chartbox"><svg class="chart" id="chart" viewBox="0 0 900 380" role="img" aria-label="Projected taxable income by age against tax bracket thresholds"></svg><div class="legend"><span><i style="background:#6E93BC"></i>Taxable Social Security</span><span><i style="background:#B0392C"></i>Forced RMD</span><span><i style="background:#DED8C9"></i>Other withdrawals</span><span><i style="background:#162136;height:2px;width:16px;border-radius:0"></i>Bracket thresholds</span></div></div>
+    <div class="table-card rmd-table"><table class="data"><thead><tr><th>Your age</th><th>Pre-tax opening</th><th>Forced RMD</th><th>Taxable Social Security</th><th>Marginal rate</th><th>IRMAA due</th></tr></thead><tbody id="rmdCheckRows"></tbody></table><div class="table-note">IRMAA uses the modelled MAGI from two years earlier. Current MAGI supplies the pre-retirement lookback years.</div></div>
+  </div>
 </section>
 
 <section>
@@ -549,6 +794,10 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   <div class="table-note">Estimated after-tax value assumes each remaining account is drawn over ten years. Modelled tax includes retirement tax plus the extra working-year tax caused by redirecting a deductible contribution. Raw balance is the account-statement total before that future tax.</div>
 </section>
 
+</div>
+</main>
+
+<div class="detail-grid full-width-results">
 <section>
   <div class="sec-head"><span class="sec-num">04</span><h2>Withdrawal-order comparison</h2><span class="sec-note">The contribution answer can change when the drawdown order changes.</span></div>
   <div class="table-card"><table class="data"><thead><tr><th>Withdrawal order</th><th>Best bucket</th><th>Roth break-even</th><th>Brokerage break-even</th><th>Best projected outcome</th></tr></thead><tbody id="orderRows"></tbody></table></div>
@@ -558,7 +807,9 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   <div class="sec-head"><span class="sec-num">05</span><h2>Does the answer survive different assumptions?</h2><span class="sec-note">Nine tests across return and spending. This is not a Monte Carlo simulation.</span></div>
   <div class="card-s"><div class="sens-grid" id="sensGrid"></div><div class="sens-summary" id="sensSummary"></div></div>
 </section>
+</div>
 
+<div class="detail-grid lower-detail-grid">
 <section>
   <div class="sec-head"><span class="sec-num">06</span><h2>The US and India reconciliation</h2><span class="sec-note">Two tax systems can read the same account differently. India outcomes are scenario assumptions.</span></div>
   <div class="spread" id="spread"><div class="col-us"><div class="col-head"><div class="j">United States</div><div class="n">What the IRS sees</div></div><div id="usRows"></div></div><div class="gutter"><div class="gut-head"></div><div id="gutRows"></div></div><div class="col-in"><div class="col-head"><div class="j">India</div><div class="n">What the ITD may see</div></div><div id="inRows"></div></div></div>
@@ -568,10 +819,11 @@ details.audit[open] summary{border-bottom:1px solid var(--line)}
   <div class="sec-head"><span class="sec-num">07</span><h2>What to check next</h2><span class="sec-note">Questions and deadlines, not tax instructions.</span></div>
   <ol class="checks" id="checks"></ol>
 </section>
+</div>
 
 <section>
   <div class="sec-head"><span class="sec-num">08</span><h2>Year-by-year audit</h2><span class="sec-note">Open the table or download the full CSV for all three strategies.</span></div>
-  <details class="audit"><summary>Show annual results</summary><div class="audit-scroll"><table class="data"><thead><tr><th>Strategy</th><th>Age</th><th>Projected outcome</th><th>After-tax value</th><th>Raw balance</th><th>RMD</th><th>Total tax</th><th>IRMAA</th><th>Shortfall</th></tr></thead><tbody id="auditRows"></tbody></table></div></details>
+  <div class="audit audit-always"><div class="audit-title">Annual results for all three contribution strategies</div><div class="audit-scroll"><table class="data"><thead><tr><th>Strategy</th><th>Age</th><th>Projected outcome</th><th>After-tax value</th><th>Raw balance</th><th>RMD</th><th>Total tax</th><th>IRMAA</th><th>Shortfall</th></tr></thead><tbody id="auditRows"></tbody></table></div></div>
 </section>
 
 <footer>
@@ -826,7 +1078,7 @@ function analyseSet(inp,set){
   return {best,beR,beB,tie,gap};
 }
 
-let LAST=null,INPUT_MODE="simple",renderTimer=null;const DEFAULTS={};
+let LAST=null,INPUT_MODE="advanced",renderTimer=null;const DEFAULTS={};
 function render(){
   const inp=readInputs();validateInputs(inp);document.querySelectorAll(".spouse-row").forEach(el=>el.style.display=inp.filing==="mfj"?"":"none");document.querySelectorAll(".row.nri").forEach(el=>el.style.display=inp.plan==="india"?"":"none");
   const base=simulate(inp,"pre"),roth=simulate(inp,"roth"),brok=simulate(inp,"brokerage"),set={base,roth,brok},analysis=analyseSet(inp,set);LAST={inp,...set,analysis};
@@ -926,8 +1178,8 @@ function toCsv(){
   lines.push("");lines.push(["Summary","Pre-tax","Roth","Brokerage"].join(","));for(const [label,fn] of [["Projected outcome",s=>s.endOutcome],["After-tax value at 95",s=>s.endAfterTax],["Raw balance at 95",s=>s.endRaw],["Modelled tax, now to 95",s=>s.lifeTax],["Extra current tax before retirement",s=>s.workTaxCost],["Retirement-period tax",s=>s.retirementTax],["Lifetime IRMAA",s=>s.lifeIrmaa],["Lifetime shortfall",s=>s.lifeShortfall]])lines.push([label,...[LAST.base,LAST.roth,LAST.brok].map(fn)].map(esc).join(","));lines.push(["Break-even after retirement","baseline",formatBE(LAST.analysis.beR),formatBE(LAST.analysis.beB)].map(esc).join(","));
   const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pretax-trap-all-scenarios-"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);flash("CSV downloaded.");
 }
-function resetAll(){for(const k of Object.keys(DEFAULTS)){if(k==="__plan")continue;const el=$(k);if(el)el.value=DEFAULTS[k];}document.querySelectorAll("#segPlan button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.plan===DEFAULTS.__plan)));INPUT_MODE="simple";history.replaceState(null,"",location.pathname);applyInputMode();render();flash("Reset to defaults.");}
-function applyInputMode(){document.body.classList.toggle("simple-inputs",INPUT_MODE==="simple");$("btnInputMode").textContent=INPUT_MODE==="simple"?"Show advanced inputs":"Hide advanced inputs";$("btnInputMode").setAttribute("aria-pressed",String(INPUT_MODE==="advanced"));}
+function resetAll(){for(const k of Object.keys(DEFAULTS)){if(k==="__plan")continue;const el=$(k);if(el)el.value=DEFAULTS[k];}document.querySelectorAll("#segPlan button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.plan===DEFAULTS.__plan)));INPUT_MODE="advanced";history.replaceState(null,"",location.pathname);applyInputMode();render();flash("Reset to defaults.");}
+function applyInputMode(){INPUT_MODE="advanced";document.body.classList.remove("simple-inputs");$("btnInputMode").textContent="All inputs shown";$("btnInputMode").setAttribute("aria-pressed","true");}
 function stampPrintMeta(){const d=new Date();$("printMeta").textContent=d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})+" · projection, not advice";}
 
 document.querySelectorAll("#segPlan button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#segPlan button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");scheduleRender();}));
